@@ -61,25 +61,24 @@ Dalam DSR, artefak **bukan tujuan akhir** — ia adalah instrumen untuk menghasi
 ## Template A.1 — Research Mindset Self-Assessment
 
 ```
-Nama Peneliti    : ____________________
-Tanggal          : ____________________
+Nama Peneliti    : Dysar Adnant Ilham Nur Asnawi
+Tanggal          : 21 April 2026
 
 1. Ketika membaca klaim "metode X 95% akurat":
-   - Pertanyaan pertama saya: ____________________
-   - Data yang dibutuhkan untuk verifikasi: ____________________
+   - Pertanyaan pertama saya: Bagaimana distribusi dan ukuran dataset yang digunakan, apakah mencakup skenario ekstrem, serta metode evaluasi apa yang dipakai untuk menghasilkan akurasi 95%?
+   - Data yang dibutuhkan untuk verifikasi: Confusion matrix, precision, recall, F1-score, spesifikasi sensor, serta log data mentah sebelum preprocessing
 
 2. Posisi paradigma:
-   - Pendekatan: [ ] Positivis  [ ] Interpretivis  [ ] Design Science  [ ] Mixed
-   - Alasan: ____________________
-
+   - Pendekatan: [ ] Positivis  [ ] Interpretivis  [X] Design Science  [ ] Mixed
+   - Alasan: Riset ini menggunakan pendekatan Design Science karena berfokus pada pembangunan dan evaluasi artefak berupa sistem otomasi hidroponik berbasis IoT untuk menyelesaikan masalah efisiensi pertanian secara       praktis.
 3. Identifikasi distorsi:
-   - Asumsi tersembunyi: ____________________
-   - Sumber bias potensial: ____________________
-   - Langkah mitigasi: ____________________
+   - Asumsi tersembunyi: Sistem dianggap akan selalu mendapatkan paparan sinar matahari yang konstan untuk panel surya dan tidak mempertimbangkan variabilitas cuaca ekstrem dalam jangka panjang
+   - Sumber bias potensial: Penempatan sensor suhu yang mungkin terlalu dekat dengan komponen elektronik yang panas, dan bias dataset (misalnya hanya diuji di satu lokasi)
+   - Langkah mitigasi: Melakukan kalibrasi sensor secara berkala dengan alat ukur standar industri dan menggunakan teknik shielding pada sensor dan melakukan pengujian di berbagai kondisi lingkungan.
 
 4. Komitmen etika:
-   - Data yang tidak akan dimanipulasi: ____________________
-   - Batasan yang diakui sejak awal: ____________________
+   - Data yang tidak akan dimanipulasi: Log waktu respons (latensi) pengiriman data dari sensor ke dashboard dan pembacaan asli parameter lingkungan, hasil pengujian yang gagal juga dilaporkan
+   - Batasan yang diakui sejak awal: Keterbatasan generalisasi sistem yaitu kapasitas baterai pada panel surya yang mungkin mempengaruhi stabilitas sistem saat cuaca mendung berkepanjangan.
 ```
 
 ---
@@ -93,24 +92,23 @@ Pilih satu paper riset di bidang TI yang mengklaim "metode X meningkatkan perfor
 > **Contoh domain TI:** "Deteksi anomali lalu-lintas jaringan menggunakan CNN — akurasi meningkat 94% vs baseline SVM 87%." Distorsi potensial: apakah dataset normal/anomali seimbang? Apakah hanya diuji pada satu vendor traffic?
 
 **Paper yang dipilih:**
-> Judul: _______________________________________________
-> Penulis (Tahun): ______________________________________
-> Sumber/Link DOI: _____________________________________
+> Judul: Desain dan Prototipe Integrasi IoT dalam Pertanian Hidroponik Cerdas Berbasis Energi Terbarukan
+> Penulis (Tahun): Agus Salim Wardhana, Muhammad Ferdiansyah, Siti Kholifah K (2025)
+> Sumber/Link DOI: https://journal.stmiki.ac.id/index.php/jimik/article/view/1134
 
 | Tahap | Apa yang Dilakukan | Potensi Distorsi |
 |-------|-------------------|-----------------|
-| Reality → Data | *Contoh: Kumpulkan log server 30 hari* | *Contoh: Hanya ambil jam sibuk* |
-| Data → Processing | | |
-| Processing → Analysis | | |
-| Analysis → Inference | | |
-| Inference → Knowledge | | |
+| Reality → Data | Mengambil data suhu dan kelembapan menggunakan sensor DHT22 pada sistem hidroponik berbasis IoT. | Sensor Accuracy Limitation: Sensor DHT22 memiliki keterbatasan akurasi dan presisi, yang dapat menyebabkan perbedaan antara kondisi nyata dan data yang tercatat. |
+| Data → Processing | Data dari sensor dikirim melalui mikrokontroler (Arduino Uno) ke platform IoT untuk monitoring. | Transmission Reliability: Jurnal tidak membahas stabilitas pengiriman data, sehingga ada potensi kehilangan atau keterlambatan data yang tidak terdeteksi. |
+| Processing → Analysis | Sistem membandingkan data sensor dengan parameter tertentu untuk mengontrol aktuator seperti pompa dan kipas. | Parameter Rigidity: Penentuan parameter kontrol tidak dijelaskan fleksibilitasnya, sehingga berpotensi tidak optimal jika kondisi lingkungan berubah. |
+| Analysis → Inference | Menyimpulkan bahwa sistem mampu berjalan dengan memanfaatkan energi dari panel surya. | Context Limitation: Kesimpulan diambil tanpa pembahasan kondisi cuaca ekstrem atau jangka panjang, sehingga validitasnya terbatas pada kondisi tertentu. |
+| Inference → Knowledge | Menyatakan bahwa sistem meningkatkan efisiensi dan dapat mengurangi penggunaan listrik konvensional. | Measurement Validity: Klaim efisiensi tidak didukung oleh metrik kuantitatif yang rinci (misalnya pertumbuhan tanaman atau perbandingan sebelum–sesudah). |
 
-**Distorsi paling besar di tahap:** ________________________
+**Distorsi paling besar di tahap:** Inference → Knowledge
 
 **Dua distorsi spesifik yang teridentifikasi:**
-1. ___________________________________________________
-2. ___________________________________________________
-
+1. Measurement Validity Bias: Klaim peningkatan efisiensi tidak didukung dengan indikator kuantitatif yang jelas seperti hasil panen, pertumbuhan tanaman, atau perbandingan performa sebelum dan sesudah sistem diterapkan.
+2. Contextual Limitation Bias: Evaluasi sistem energi surya tidak mempertimbangkan variasi kondisi lingkungan seperti cuaca mendung atau musim hujan, sehingga hasil tidak dapat digeneralisasi.
 ---
 
 ## Latihan 2 — Analisis Kasus Etika
@@ -119,29 +117,29 @@ Skenario: Seorang peneliti menemukan bahwa jika 3 data point outlier dihapus, ha
 
 | Perspektif | Analisis |
 |------------|---------|
-| Kejujuran ilmiah | *Contoh: Laporkan kedua versi (dengan dan tanpa outlier)* |
-| Transparansi | |
-| Peer review | |
+| Kejujuran ilmiah | Peneliti wajib melaporkan hasil apa adanya. Menghapus outlier hanya untuk mencapai signifikansi statistik termasuk praktik tidak etis (p-hacking). Kedua hasil (dengan dan tanpa outlier) harus disajikan, disertai alasan metodologis jika outlier dipertimbangkan untuk dikeluarkan.|
+| Transparansi | Peneliti harus menjelaskan secara terbuka: kriteria identifikasi outlier, metode deteksi (misalnya Z-score atau IQR), serta dampaknya terhadap hasil analisis. Tidak boleh ada data yang dihilangkan tanpa penjelasan eksplisit dalam metode penelitian. |
+| Peer review | Reviewer akan mempertanyakan alasan penghapusan outlier. Jika tidak ada justifikasi kuat (misalnya kesalahan pengukuran atau data corrupt), maka tindakan tersebut bisa dianggap manipulasi data. Hal ini berpotensi menyebabkan penolakan paper atau revisi besar. |
 
 **Keputusan akhir dan justifikasi:**
-> ___________________________________________________
+> Outlier tidak boleh dihapus hanya untuk membuat hasil menjadi signifikan. Peneliti harus melaporkan hasil analisis secara lengkap (dengan dan tanpa outlier) serta memberikan justifikasi metodologis yang jelas jika ada data yang dikeluarkan. Keputusan ini menjaga integritas ilmiah, menghindari bias, dan memastikan hasil penelitian dapat dipercaya serta direplikasi.
 
 ---
 
 ## Latihan 3 — Posisi Paradigma
 
-**Topik riset:** ________________________________________
+**Topik riset:** Pengembangan sistem otomasi hidroponik berbasis IoT dengan integrasi panel surya untuk meningkatkan efisiensi
 
 > **Skala 1–5:** 1 = tidak sesuai sama sekali dengan topik ini, 5 = sangat sesuai dan dominan digunakan pada riset bertopik serupa.
 
 | Kriteria | Positivis | Interpretivis | Design Science |
 |----------|-----------|---------------|----------------|
-| Kesesuaian dengan topik (1–5) | *Contoh: 4 — topik kuantitatif, cocok uji hipotesis* | *Contoh: 2 — topik tidak studi makna/konteks* | *Contoh: 5 — membangun artefak untuk uji klaim* |
-| Jenis data yang dikumpulkan | *Metrik numerik, log eksperimen* | *Wawancara, observasi kualitatif* | *Hasil uji artefak, komparasi kinerja* |
-| Limitasi paradigma | | | |
+| Kesesuaian dengan topik (1–5) | 4 — Cocok karena melibatkan pengukuran data sensor (suhu, kelembapan) dan pengujian performa sistem secara kuantitatif | 1 — Tidak fokus pada makna sosial atau interpretasi manusia | 5 — Sangat sesuai karena membangun dan mengevaluasi artefak berupa sistem IoT |
+| Jenis data yang dikumpulkan | Data numerik dari sensor, log sistem, performa energi | Data kualitatif seperti wawancara pengguna (tidak dominan di riset ini) | Hasil uji sistem, efisiensi energi, performa aktuator, keberhasilan otomasi |
+| Limitasi paradigma | Terbatas pada aspek terukur, kurang menangkap konteks penggunaan di lapangan | Tidak relevan untuk evaluasi sistem teknis berbasis perangkat | Fokus pada artefak, sehingga terkadang kurang mendalam dalam analisis teoritis atau generalisasi luas |
 
-**Paradigma yang dipilih:** _____________________________
-**Alasan:** ____________________________________________
+**Paradigma yang dipilih:** Design Science
+**Alasan:** Pendekatan Design Science dipilih karena penelitian ini berfokus pada perancangan, implementasi, dan evaluasi artefak berupa sistem otomasi hidroponik berbasis IoT. Tujuan utama bukan hanya memahami fenomena, tetapi memberikan solusi praktis terhadap masalah efisiensi pertanian dengan memanfaatkan teknologi dan energi terbarukan. Evaluasi dilakukan melalui performa sistem yang dibangun, sehingga paradigma ini paling dominan dan relevan.
 
 ---
 
@@ -150,5 +148,4 @@ Skenario: Seorang peneliti menemukan bahwa jika 3 data point outlier dihapus, ha
 > Sebelum membaca materi ini, apakah pernah mempertanyakan klaim "95% akurat"? Setelah memahami rantai distorsi, pertanyaan apa yang sekarang akan diajukan saat membaca paper?
 
 **Jawaban:**
-> ___________________________________________________
-> ___________________________________________________
+> Kini, saya akan mempertanyakan: bagaimana kualitas dan distribusi data yang digunakan, apakah terdapat bias atau outlier yang mempengaruhi hasil, metode evaluasi apa yang dipakai (misalnya confusion matrix, precision, recall), serta apakah klaim tersebut didukung oleh pengujian yang cukup dan dapat digeneralisasi. Selain itu, saya juga akan melihat apakah ada keterbatasan yang diakui peneliti dan apakah hasil penelitian transparan serta dapat direplikasi.
