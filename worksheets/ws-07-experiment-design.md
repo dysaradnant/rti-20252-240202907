@@ -68,36 +68,36 @@ Ancaman validitas harus diidentifikasi **sebelum** eksperimen dan mitigasinya di
 ```
 EXPERIMENT DESIGN
 
-Research Question : ____________________
-Hypothesis        : ____________________
-Tipe Eksperimen   : [ ] Comparison  [ ] Ablation  [ ] Parameter
+Research Question : Apakah desain integrasi IoT holistik berbasis panel surya yang diusulkan mampu meningkatkan efisiensi penggunaan energi minimal sebesar 8% dan kestabilan operasional sistem (waktu operasi 24 jam tanpa gangguan) dibandingkan dengan baseline sistem IoT solar sederhana pada kondisi lingkungan simulasi daerah terpencil dengan variasi intensitas cahaya matahari?
+Hypothesis        : H₁ — Desain integrasi IoT holistik menghasilkan efisiensi energi lebih tinggi (≥8%) dan kestabilan operasional yang lebih baik dibandingkan baseline.
+Tipe Eksperimen   : [v] Comparison  [ ] Ablation  [ ] Parameter
 
 Kondisi Eksperimen:
 | Kondisi | Deskripsi | IV Value | CV Settings |
 |---------|-----------|----------|-------------|
-| Control |           |          |             |
-| Treatment |         |          |             |
+| Control |   Sistem IoT solar sederhana (seperti common practice di literatur)        |    Baseline (otomasi dasar tanpa holistic scheduler)      |      Setpoint suhu & kelembaban sama, durasi pengujian sama, sensor sama       |
+| Treatment |      Sistem IoT holistik dengan adaptive energy management   |     Holistic Design (dengan scheduler adaptif + battery management)     |     Sama dengan baseline        |
 
 Fairness Checklist:
-  [ ] Dataset identik untuk semua kondisi
-  [ ] Preprocessing setara
-  [ ] Tuning effort setara
-  [ ] Environment identik
-  [ ] Metrik evaluasi sama
+  [v] Dataset identik untuk semua kondisi
+  [v] Preprocessing setara
+  [v] Tuning effort setara
+  [v] Environment identik
+  [v] Metrik evaluasi sama
 
 Threat Analysis:
 | Threat Type | Ancaman Spesifik | Mitigasi |
 |-------------|-----------------|----------|
-| Internal    |                 |          |
-| External    |                 |          |
-| Construct   |                 |          |
-| Conclusion  |                 |          |
+| Internal    |  Fluktuasi cuaca yang tidak terkendali memengaruhi kedua sistem secara berbeda               |      Pengujian simultan atau bergantian di waktu yang sama, randomisasi urutan pengujian, serta analisis sensitivitas cuaca    |
+| External    |     Hasil prototipe skala kecil sulit digeneralisasi ke instalasi komersial            |     Melakukan pengujian di minimal 2 skala berbeda dan mendokumentasikan batasan skalabilitas     |
+| Construct   |        Efisiensi energi diukur, tetapi tidak mencerminkan manfaat agronomis         |   Menggunakan secondary metric: pertumbuhan tanaman (tinggi & jumlah daun)       |
+| Conclusion  |        Sample size pengujian terlalu kecil sehingga power statistik rendah         |    Melakukan pengujian minimal 8–12 minggu dengan multiple runs dan perhitungan power analysis      |
 
 Statistical Plan:
-  Uji statistik   : ____________________
-  Justifikasi      : ____________________
-  Alpha            : ____________________
-  Effect size min  : ____________________
+  Uji statistik   : Independent t-test atau Mann-Whitney U test (tergantung normalitas data)
+  Justifikasi      : Cocok untuk membandingkan dua kelompok independen (baseline vs treatment) pada metrik ratio
+  Alpha            : 0.05
+  Effect size min  : Cohen’s d ≥ 0.5 (medium effect) atau peningkatan minimal 8% pada efisiensi energi
 ```
 
 ---
@@ -106,13 +106,13 @@ Statistical Plan:
 
 Susun desain eksperimen berdasarkan RQ, variabel, dan sistem dari WS-04 sampai WS-06.
 
-**RQ:** __________________________________________________
-**Tipe eksperimen:** [ ] Comparison / [ ] Ablation / [ ] Parameter
+**RQ:** Apakah desain integrasi IoT holistik berbasis panel surya yang diusulkan mampu meningkatkan efisiensi penggunaan energi minimal sebesar 8% dan kestabilan operasional sistem dibandingkan baseline?
+**Tipe eksperimen:** [v] Comparison / [ ] Ablation / [ ] Parameter
 
 | Kondisi | Deskripsi | IV Value | CV Settings |
 |---------|-----------|----------|-------------|
-| Control | *Contoh: RF baseline dari literatur* | *RF* | *Dataset X, 80:20 split, seed 42* |
-| Treatment | | | |
+| Control | Baseline sistem IoT solar sederhana | Baseline Design | Sensor, setpoint, lokasi, durasi sama |
+| Treatment | Sistem dengan integrasi holistik & adaptive scheduler | Holistic IoT-Solar Design | Sama dengan control |
 
 ---
 
@@ -122,13 +122,13 @@ Evaluasi apakah desain eksperimen di Latihan 1 sudah fair.
 
 | Kriteria | Status | Detail |
 |----------|--------|--------|
-| Dataset identik | *Contoh: ✅ — sama-sama pakai CIC-MalMem-2022* | |
-| Preprocessing setara | | |
-| Tuning effort setara | | |
-| Environment identik | | |
-| Metrik evaluasi sama | | |
+| Dataset identik | ✅ | Data sensor diambil dari lingkungan dan periode waktu yang sama |
+| Preprocessing setara | ✅ | Log data diproses dengan script yang sama |
+| Tuning effort setara | ✅ | Kedua sistem dioptimasi dengan effort yang sebanding |
+| Environment identik | ✅ | Pengujian dilakukan secara paralel atau bergantian di lokasi yang sama |
+| Metrik evaluasi sama | ✅ | Semua metrik dihitung dengan formula dan tool yang identik |
 
-**Ada yang tidak fair?** [ ] Ya / [ ] Tidak
+**Ada yang tidak fair?** [ ] Ya / [v] Tidak
 > Jika ya, bagaimana cara memperbaikinya? ________________
 
 ---
@@ -139,14 +139,14 @@ Identifikasi ancaman validitas untuk desain eksperimen ini.
 
 | Threat Type | Ancaman Spesifik | Mitigasi |
 |-------------|-----------------|----------|
-| Internal | *Contoh: Data leakage antara train-test* | *Contoh: Gunakan stratified split, validasi tidak ada overlap* |
-| External | | |
-| Construct | | |
-| Conclusion | | |
-
-**Ancaman mana yang paling sulit dimitigasi?** _____________
+| Internal | Fluktuasi cuaca yang tidak terkendali memengaruhi kedua sistem secara berbeda | Pengujian simultan atau bergantian di waktu yang sama, randomisasi urutan pengujian, serta analisis sensitivitas cuaca |
+| External | Hasil prototipe skala kecil sulit digeneralisasi ke instalasi komersial | Melakukan pengujian di minimal 2 skala berbeda dan mendokumentasikan batasan skalabilitas |
+| Construct | Efisiensi energi diukur, tetapi tidak mencerminkan manfaat agronomis | Menggunakan secondary metric: pertumbuhan tanaman (tinggi & jumlah daun) |
+| Conclusion | Sample size pengujian terlalu kecil sehingga power statistik rendah | Melakukan pengujian minimal 8–12 minggu dengan multiple runs dan perhitungan power analysis |
+ 
+**Ancaman mana yang paling sulit dimitigasi?** External Validity (generalizability)
 **Mengapa?**
-> ___________________________________________________
+> Karena riset ini menggunakan prototipe skala kecil di lingkungan simulasi. Sulit sepenuhnya merepresentasikan kondisi lapangan yang sangat beragam (ukuran lahan, jenis tanaman, cuaca ekstrem jangka panjang). Mitigasi terbaik yang bisa dilakukan adalah transparansi batasan dan merekomendasikan replikasi di skala yang lebih besar.
 
 ---
 
@@ -155,6 +155,6 @@ Identifikasi ancaman validitas untuk desain eksperimen ini.
 > Sebuah paper melaporkan "metode kami mengalahkan semua baseline." Apa 3 pertanyaan pertama yang harus diajukan untuk mengevaluasi klaim ini?
 
 **Jawaban:**
-1. ___________________________________________________
-2. ___________________________________________________
-3. ___________________________________________________
+1. Apa baseline yang digunakan dan apakah kondisi eksperimennya benar-benar identik dengan metode yang diklaim lebih baik?
+2. Apakah ada confounding variable (misalnya tuning hyperparameter, durasi pelatihan, atau hardware) yang tidak disebutkan?
+3. Berapa lama pengujian dilakukan dan apakah hasilnya konsisten di berbagai kondisi (atau hanya di kondisi ideal)?
