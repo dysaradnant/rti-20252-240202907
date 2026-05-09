@@ -80,25 +80,27 @@ Jika variabel tidak bisa di-map ke komponen apapun → arsitektur perlu didesain
 ```
 SYSTEM-EXPERIMENT MAPPING
 
-Research Question: ____________________
+Research Question: Apakah desain integrasi IoT holistik berbasis panel surya yang diusulkan mampu meningkatkan efisiensi penggunaan energi minimal sebesar 8% dan kestabilan operasional sistem (waktu operasi 24 jam tanpa gangguan) dibandingkan dengan baseline sistem IoT solar sederhana pada kondisi lingkungan simulasi daerah terpencil dengan variasi intensitas cahaya matahari?
 
 Variable → Component Mapping:
 | Variabel | Tipe | Komponen Sistem | Cara Manipulasi/Pengukuran |
 |----------|------|-----------------|---------------------------|
-|          | IV   |                 |                           |
-|          | DV   |                 |                           |
-|          | CV   |                 |                           |
+| Desain Sistem | IV | Arsitektur keseluruhan (Holistic Controller + Energy Management Module) | Ganti config mode: holistic_mode: true/false atau swap modul Energy Scheduler |
+| Efisiensi Penggunaan Energi | DV | Energy Monitoring & Logging Module + Power Meter Interface | Data logger real-time (setiap 5 menit) + perhitungan otomatis |
+| Kestabilan Operasional      | DV   | System Health Monitor + Uptime Tracker | Timestamp logging + deteksi downtime otomatis |
+| Kontrol Lingkungan (Suhu & Kelembaban) | DV Pendukung | Sensor Fusion Layer + Actuator Controller | Sensor DHT22 + log deviasi terhadap setpoint |
+| Kondisi Lingkungan (Intensitas Cahaya) | CV | Environmental Simulator / Sensor Input | Dikontrol melalui variasi lampu simulasi atau pengujian outdoor |
 
 4 Prinsip Desain:
-  [ ] Traceability — Setiap komponen bisa ditelusuri ke variabel
-  [ ] Variable Isolation — IV bisa diubah tanpa mengubah CV
-  [ ] Measurement Integration — Pengukuran DV built-in
-  [ ] Reproducibility — Setup bisa direkonstruksi
+  [v] Traceability — Setiap komponen bisa ditelusuri ke variabel
+  [v] Variable Isolation — IV bisa diubah tanpa mengubah CV
+  [v] Measurement Integration — Pengukuran DV built-in
+  [v] Reproducibility — Setup bisa direkonstruksi
 
 Experimental Setup:
-  Input data     : ____________________
-  Parameter      : ____________________
-  Output format  : ____________________
+  Input data     : Data sensor real-time (DHT22, solar irradiance sensor, current/voltage sensor)
+  Parameter      : Setpoint suhu & kelembaban, jadwal aktuator, threshold baterai, durasi pengujian (minimal 8 minggu)
+  Output format  : CSV/JSON log harian (energi, uptime, deviasi sensor), grafik visualisasi, dan laporan summary per kondisi eksperimen
 ```
 
 ---
@@ -107,15 +109,16 @@ Experimental Setup:
 
 Gunakan RQ dan variabel dari WS-05. Petakan ke komponen sistem.
 
-**RQ:** __________________________________________________
+**RQ:** Apakah desain integrasi IoT holistik berbasis panel surya yang diusulkan mampu meningkatkan efisiensi penggunaan energi minimal sebesar 8% dan kestabilan operasional sistem (waktu operasi 24 jam tanpa gangguan) dibandingkan dengan baseline sistem IoT solar sederhana pada kondisi lingkungan simulasi daerah terpencil dengan variasi intensitas cahaya matahari?
 
 | Variabel | Tipe | Komponen Sistem | Cara Manipulasi / Pengukuran |
 |----------|------|-----------------|---------------------------|
-| *Contoh: Jenis model* | *IV* | *Modul classifier (swap RF ↔ CNN)* | *Ganti config `model_type`* |
-| | DV | | |
-| | CV | | |
+| Desain Sistem | IV | Holistic Energy Management Module + Adaptive Scheduler | Toggle melalui configuration file |
+| Efisiensi Penggunaan Energi | DV | Power Monitoring Subsystem | Real-time calculation + data logger |
+| Kestabilan Operasional | DV | System Reliability Monitor | Continuous uptime logging |
+| Akurasi Kontrol Lingkungan | DV | Actuator & Sensor Control Layer | Deviation logging dari setpoint |
 
-**Apakah semua variabel bisa di-map?** [ ] Ya / [ ] Tidak
+**Apakah semua variabel bisa di-map?** [v] Ya / [ ] Tidak
 > Jika tidak, komponen apa yang perlu ditambahkan? _________
 
 ---
@@ -126,14 +129,14 @@ Evaluasi desain sistem terhadap 4 prinsip.
 
 | Prinsip | Status | Bukti / Penjelasan |
 |---------|--------|-------------------|
-| Traceability | *Contoh: ✅ — setiap modul punya label variabel* | |
-| Modularity | | |
-| Controllability | | |
-| Measurability | | |
+| Traceability | ✅ | Setiap modul utama diberi label sesuai variabel riset (misalnya folder energy_management/ untuk IV) |
+| Modularity | ✅ | Modul Energy Scheduler, Sensor Fusion, dan Actuator Controller dapat diubah secara independen |
+| Controllability | ✅ | Semua parameter penting (setpoint, scheduling logic, threshold) disimpan di file config YAML/JSON |
+| Measurability | ✅ | Logging otomatis untuk semua metrik DV sudah terintegrasi sejak awal desain |
 
-**Prinsip mana yang paling sulit dipenuhi?** _______________
+**Prinsip mana yang paling sulit dipenuhi?** Modularity & Variable Isolation
 **Strategi untuk mengatasinya:**
-> ___________________________________________________
+> Saya akan menerapkan pendekatan configuration-driven design yang ketat dan membuat feature toggles untuk setiap komponen penting. Selain itu, saya akan mendokumentasikan setiap perubahan konfigurasi agar eksperimen dapat direplikasi dengan mudah oleh orang lain. Ini memang memerlukan disiplin ekstra di awal, tetapi sangat berharga untuk kredibilitas hasil riset.
 
 ---
 
@@ -144,16 +147,16 @@ Jika sistem memiliki 3 komponen utama, rencanakan ablation study.
 > **Panduan jumlah kondisi:** Untuk 3 komponen (A, B, C), kondisi minimal yang direkomendasikan:
 > Full + (-A) + (-B) + (-C) = **4 kondisi dasar**. Jika waktu memungkinkan, tambahkan kombinasi ganda: (-A,-B), (-A,-C), (-B,-C) = **7 kondisi**. Sesuaikan dengan *computational cost* dan tenggat waktu penelitian.
 
-| Kondisi | Komponen A | Komponen B | Komponen C | Hasil yang Diharapkan |
+| Kondisi | Holistic Scheduler | Adaptive Battery Management | Full Sensor Fusion | Hasil yang Diharapkan |
 |---------|-----------|-----------|-----------|----------------------|
-| Full | *Contoh: ✅ CNN* | *Contoh: ✅ Temporal features* | *Contoh: ✅ Z-score norm* | *Baseline penuh* |
-| – A | ❌ (ganti RF) | ✅ | ✅ | |
-| – B | ✅ | ❌ (tanpa temporal) | ✅ | |
-| – C | ✅ | ✅ | ❌ (tanpa normalisasi) | |
+| Full | ✅ | ✅ | ✅ | Performa terbaik |
+| – Scheduler | ❌ | ✅ | ✅ | Penurunan efisiensi energi |
+| – Battery | ✅ | ❌ | ✅ | Penurunan kestabilan operasional |
+| – Fusion | ✅ | ✅ | ❌ | Deviasi kontrol lingkungan meningkat |
 
-**Komponen mana yang diprediksi paling berkontribusi?** _____
+**Komponen mana yang diprediksi paling berkontribusi?** Holistic Scheduler (pengaturan waktu aktuator berdasarkan prediksi ketersediaan energi surya)
 **Mengapa?**
-> ___________________________________________________
+> Karena fluktuasi intensitas matahari adalah tantangan utama di daerah terpencil. Scheduler yang adaptif kemungkinan besar memberikan kontribusi paling besar terhadap efisiensi energi dan kestabilan sistem dibandingkan komponen lain.
 
 ---
 
@@ -162,5 +165,5 @@ Jika sistem memiliki 3 komponen utama, rencanakan ablation study.
 > Apa risiko jika sistem dibangun seperti produk (monolitik, fitur lengkap) lalu baru dilakukan eksperimen? Mengapa arsitektur modular penting untuk riset?
 
 **Jawaban:**
-> ___________________________________________________
-> ___________________________________________________
+> Risiko utama jika sistem dibangun seperti produk (monolitik dan fitur lengkap) lalu baru dilakukan eksperimen adalah kehilangan kontrol variabel. Sulit mengetahui komponen mana yang sebenarnya menyebabkan perbaikan (atau penurunan) performa. Selain itu, sulit mereplikasi eksperimen dan rawan confounding variable.
+> Arsitektur modular sangat penting dalam riset karena memungkinkan variable isolation — kita bisa mengubah satu faktor saja sambil menjaga faktor lain konstan. Ini membuat klaim ilmiah kita lebih kuat, hasil lebih dapat dipercaya, dan memudahkan ablation study untuk memahami kontribusi masing-masing komponen. Pada akhirnya, sistem bukan lagi sekadar “produk yang keren”, melainkan instrumen ilmiah yang membantu kita menjawab pertanyaan riset dengan jujur dan rigorus.
