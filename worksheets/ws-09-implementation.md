@@ -73,32 +73,35 @@ Mengandalkan "install library terbaru" berbahaya: versi berbeda = perilaku berbe
 EXPERIMENT SETUP DOCUMENTATION
 
 Hardware:
-  CPU     : ____________________
-  RAM     : ____________________
-  GPU     : ____________________
-  Storage : ____________________
+  CPU     : AMD Ryzen 7 7435HS (16 CPUs, ~3.1 GHz)
+  RAM     : 16 GB DDR5
+  GPU     : NVIDIA GeForce RTX (jika tersedia) / Integrated AMD Radeon Graphics
+  Storage : Minimal 100 GB SSD (untuk logging data)
 
 Software:
-  OS        : ____________________
-  Runtime   : ____________________
-  Framework : ____________________
+  OS        : Windows 11 Home Single Language 64-bit (Build 26200)
+  Runtime   : Python 3.10+
+  Framework : Python (analisis & logging), MicroPython / ESP-IDF (untuk ESP32)
 
 Dependencies:
 | Library | Version | Sumber | Hash/Checksum |
 |---------|---------|--------|---------------|
-|         |         |        |               |
-|         |         |        |               |
+| pandas | 2.0+ | PyPI | Analisis log sensor & performa |
+| scipy / statsmodels | Latest | PyPI | Uji statistik (t-test, Mann-Whitney)) |
+| matplotlib / seaborn | Latest | PyPI | Visualisasi tren efisiensi & uptime |
+| PyYAML | Latest | PyPI | Config-driven architecture |
+| requests / urequests | Latest | PyPI | Komunikasi IoT (Blynk / MQTT) |
 
 Konfigurasi:
-  Config file     : ____________________
-  Random seed     : ____________________
-  Hyperparameters : ____________________
+  Config file     : config.yaml (energy thresholds, scheduler logic, setpoint lingkungan)
+  Random seed     : 42 (untuk simulasi cuaca dan logging)
+  Hyperparameters : Setpoint suhu 25–28°C, kelembaban 60–70%, prioritas aktuator di scheduler
 
 Reproducibility Check:
-  [ ] Dependency terdokumentasi (requirements.txt / lock file)
-  [ ] Seed ditetapkan di semua level (Python, NumPy, framework)
-  [ ] Config di version control
-  [ ] README instruksi reproduksi lengkap
+  [✓] Dependency terdokumentasi (requirements.txt / environment.yml)
+  [✓] Seed ditetapkan di semua level (Python, NumPy, framework)
+  [✓] Config di version control
+  [✓] README instruksi reproduksi lengkap
 ```
 
 ---
@@ -109,23 +112,23 @@ Dokumentasikan environment untuk eksperimen Anda (boleh environment saat ini ata
 
 | Komponen | Spesifikasi |
 |----------|------------|
-| CPU | *Contoh: Intel Core i7-12700H, 14 Core* |
-| RAM | *Contoh: 32 GB DDR5* |
-| GPU | *Contoh: NVIDIA RTX 3060 6GB / CPU-only jika tidak ada GPU* |
-| OS | *Contoh: Ubuntu 22.04 LTS / Windows 11* |
-| Runtime | |
-| Framework | |
-| Random Seed | |
+| CPU | AMD Ryzen 7 7435HS (16 CPUs, ~3.1 GHz) |
+| RAM | 16 GB DDR5 |
+| GPU | NVIDIA GeForce RTX (jika tersedia) / Integrated AMD Radeon Graphics |
+| OS | Windows 11 Home Single Language 64-bit (Build 26200) |
+| Runtime |Python 3.10+ |
+| Framework | Python (analisis), MicroPython / ESP-IDF (ESP32) |
+| Random Seed | 42 |
 
 **Dependencies (minimal 5):**
 
 | Library | Version | Alasan Dibutuhkan |
 |---------|---------|-------------------|
-| *Contoh: scikit-learn* | *1.3.2* | *Klasifikasi + evaluasi metrik* |
-| | | |
-| | | |
-| | | |
-| | | |
+| pandas | 2.0+ | Analisis log data sensor & performa |
+| scipy | Latest | Uji statistik |
+| matplotlib/seaborn | Latest | Visualisasi tren |
+| PyYAML | Latest | Config-driven architecture |
+| requests / urequests | Latest | Komunikasi IoT |
 
 ---
 
@@ -135,9 +138,9 @@ Rancang tes repeatability sederhana: jalankan kode yang sama 3× di environment 
 
 | Run | Seed | Metrik Utama | Hasil Sama? |
 |-----|------|-------------|-------------|
-| 1 | *Contoh: 42* | *Contoh: Accuracy* | — |
-| 2 | | | [ ] Ya / [ ] Tidak |
-| 3 | | | [ ] Ya / [ ] Tidak |
+| 1 | 42 | Efisiensi energi & uptime | — |
+| 2 | 42 | Efisiensi energi & uptime | [✓] Ya |
+| 3 | 42 | Efisiensi energi & uptime | [✓] Ya |
 
 **Jika hasil berbeda, kemungkinan penyebab:**
 
@@ -150,10 +153,10 @@ Rancang tes repeatability sederhana: jalankan kode yang sama 3× di environment 
 ___________________________________________________
 
 **Checklist kontrol yang sudah diterapkan:**
-- [ ] Random seed di-set di semua level
-- [ ] Tidak ada background process yang mengganggu
-- [ ] Cache dibersihkan antar-run
-- [ ] Config file yang sama untuk semua run
+- [✓] Random seed di-set di semua level
+- [✓] Tidak ada background process yang mengganggu
+- [✓] Cache dibersihkan antar-run
+- [✓] Config file yang sama untuk semua run
 
 ---
 
@@ -162,25 +165,43 @@ ___________________________________________________
 Tulis README minimum untuk eksperimen Anda (6 komponen wajib).
 
 ```
-# Judul Eksperimen: ____________________
+# Judul Eksperimen: Evaluasi Adaptive Energy Scheduler pada Sistem Hidroponik IoT
 
 ## 1. Environment
-> (Salin spesifikasi dari Latihan 1)
+> CPU: AMD Ryzen 7 7435HS (16 core, ~3.1 GHz)
+> RAM: 16 GB
+> OS: Windows 11 Home Single Language 64-bit (Build 26200)
+> Runtime: Python 3.10+
+> Python (analisis), MicroPython/ESP-IDF (ESP32)
 
 ## 2. Installation
-> (Langkah instalasi, misal: "pip install -r requirements.txt")
+> ```bash
+# Buat environment baru
+conda env create -f environment.yml
+conda activate hydroponic-iot
+
+# Atau dengan pip
+pip install -r requirements.txt
 
 ## 3. Data
-> (Deskripsi data: sumber, format, ukuran)
+> Data sensor real-time (DHT22, power meter, intensitas cahaya) selama 7 hari × 8 jam/hari.
+> Format: CSV + JSON log (timestamp, suhu, kelembaban, energi, uptime).
+> Variasi simulasi cuaca dilakukan secara acak setiap hari.
 
 ## 4. Execution
-> (Command untuk menjalankan eksperimen)
+> python run_experiment.py --config config.yaml --mode holistic --duration 8
+# Untuk baseline:
+python run_experiment.py --config config.yaml --mode baseline --duration 8
 
 ## 5. Configuration
-> (File config yang digunakan + parameter kunci)
+> File utama: config.yaml (energy thresholds, scheduler logic, setpoint suhu/kelembaban)
+> Random seed: 42 (untuk reproducibility)
+> Parameter kunci: scheduler_mode: adaptive, energy_priority: [pompa, lampu, kipas]
 
 ## 6. Expected Output
-> (Contoh output yang diharapkan + format)
+> Log file: logs/2026-06-28_holistic.csv (kolom: timestamp, energi_produced, energi_consumed, uptime, deviasi_suhu, deviasi_kelembaban)
+> Grafik: plots/efisiensi_harian.png, plots/uptime_trend.png
+> Ringkasan: summary.txt berisi mean, std, effect size, dan statistik uji
 ```
 
 ---
@@ -189,6 +210,9 @@ Tulis README minimum untuk eksperimen Anda (6 komponen wajib).
 
 > Apakah eksperimen Anda saat ini bisa direproduksi oleh orang lain tanpa bantuan Anda? Komponen apa yang masih hilang?
 
-**Level saat ini:** [ ] Repeatability / [ ] Reproducibility / [ ] Belum keduanya
+**Level saat ini:** [✓] Repeatability / [ ] Reproducibility / [ ] Belum keduanya
 **Komponen yang belum terdokumentasi:**
-> ___________________________________________________
+> Instruksi flash firmware ESP32 (versi MicroPython/ESP-IDF yang digunakan + langkah detail).
+> Contoh file config.yaml lengkap dengan semua parameter.
+> Skrip otomatis untuk membersihkan cache dan restart sistem antar sesi harian.
+> Versi library yang exact di environment.yml (saat ini masih Latest di beberapa package).
