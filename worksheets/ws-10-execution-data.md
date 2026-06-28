@@ -160,20 +160,10 @@ Rencanakan bagaimana menangani anomali. Untuk setiap jenis, tentukan langkah yan
 
 | Jenis Anomali | Contoh | Tindakan |
 |---------------|--------|----------|
-| Run gagal (crash) | ESP32 disconnect, sensor error, program crash | 1. Dokumentasikan error lengkap di log.
-2. Restart sistem & sensor.
-3. Re-run dengan catatan "retry after crash".
-4. Jika berulang, analisis penyebab (kabel / power) |
-| Hasil ekstrem (outlier) | Efisiensi energi >110% atau negatif | 1. Periksa sensor (kalibrasi ulang).
-2. Dokumentasikan sebagai outlier.
-3. Analisis sensitivitas (apakah karena cuaca simulasi?).
-4. Tetap simpan, jangan hapus. |
-| Waktu eksekusi anomali | Run jauh lebih lambat dari biasanya | 1. Cek thermal throttling Ryzen 7 (gunakan HWMonitor).
-2. Tutup aplikasi latar belakang.
-3. Catat di log: "thermal throttling detected". |
-| Inkonsistensi dengan run lain | Satu run efisiensi jauh lebih rendah | 1. Bandingkan log cuaca & status baterai.
-2. Dokumentasikan sebagai variabilitas alami.
-3. Sertakan dalam analisis sensitivitas. |
+| Run gagal (crash) | ESP32 disconnect, sensor error, program crash | 1. Dokumentasikan error lengkap di log. 2. Restart sistem & sensor. 3. Re-run dengan catatan "retry after crash". 4. Jika berulang, analisis penyebab (kabel / power) |
+| Hasil ekstrem (outlier) | Efisiensi energi >110% atau negatif | 1. Periksa sensor (kalibrasi ulang). 2. Dokumentasikan sebagai outlier. 3. Analisis sensitivitas (apakah karena cuaca simulasi?). 4. Tetap simpan, jangan hapus. |
+| Waktu eksekusi anomali | Run jauh lebih lambat dari biasanya | 1. Cek thermal throttling Ryzen 7 (gunakan HWMonitor). 2. Tutup aplikasi latar belakang. 3. Catat di log: "thermal throttling detected". |
+| Inkonsistensi dengan run lain | Satu run efisiensi jauh lebih rendah | 1. Bandingkan log cuaca & status baterai. 2. Dokumentasikan sebagai variabilitas alami. 3. Sertakan dalam analisis sensitivitas. |
 
 **Prinsip:** Detect → Investigate → Document → Decide
 
