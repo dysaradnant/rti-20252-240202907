@@ -73,35 +73,62 @@ Mengandalkan "install library terbaru" berbahaya: versi berbeda = perilaku berbe
 EXPERIMENT SETUP DOCUMENTATION
 
 Hardware:
-  CPU     : AMD Ryzen 7 7435HS (16 CPUs, ~3.1 GHz)
-  RAM     : 16 GB DDR5
-  GPU     : NVIDIA GeForce RTX (jika tersedia) / Integrated AMD Radeon Graphics
-  Storage : Minimal 100 GB SSD (untuk logging data)
+
+  CPU      : AMD Ryzen™ 7 7435HS (8 Core, 16 Thread, Base Clock ±3.10 GHz)
+  RAM      : 16 GB DDR5
+  GPU      : NVIDIA GeForce RTX 3050 Laptop GPU (Dedicated VRAM 4 GB, Total Graphics Memory ±12 GB)
+  Storage  : SSD NVMe ±512 GB (Partisi sistem C: 146 GB)
 
 Software:
+
   OS        : Windows 11 Home Single Language 64-bit (Build 26200)
-  Runtime   : Python 3.10+
-  Framework : Python (analisis & logging), MicroPython / ESP-IDF (untuk ESP32)
+  Runtime   : Python 3.13
+  Framework : Arduino ESP32 Framework, Visual Studio Code, Arduino IDE 2.3.x
 
 Dependencies:
-| Library | Version | Sumber | Hash/Checksum |
-|---------|---------|--------|---------------|
-| pandas | 2.0+ | PyPI | Analisis log sensor & performa |
-| scipy / statsmodels | Latest | PyPI | Uji statistik (t-test, Mann-Whitney)) |
-| matplotlib / seaborn | Latest | PyPI | Visualisasi tren efisiensi & uptime |
-| PyYAML | Latest | PyPI | Config-driven architecture |
-| requests / urequests | Latest | PyPI | Komunikasi IoT (Blynk / MQTT) |
+
+| Library       | Version       | Sumber           | Hash/Checksum |
+|---------------|---------------|------------------|---------------|
+| numpy         | Latest Stable | PyPI             | requirements.txt |
+| pandas        | Latest Stable | PyPI             | requirements.txt |
+| matplotlib    | Latest Stable | PyPI             | requirements.txt |
+| scipy         | Latest Stable | PyPI             | requirements.txt |
+| statsmodels   | Latest Stable | PyPI             | requirements.txt |
+| PyYAML        | Latest Stable | PyPI             | requirements.txt |
+| requests      | Latest Stable | PyPI             | requirements.txt |
+| paho-mqtt     | Latest Stable | PyPI             | requirements.txt |
+| pyserial      | Latest Stable | PyPI             | requirements.txt |
+| openpyxl      | Latest Stable | PyPI             | requirements.txt |
 
 Konfigurasi:
-  Config file     : config.yaml (energy thresholds, scheduler logic, setpoint lingkungan)
-  Random seed     : 42 (untuk simulasi cuaca dan logging)
-  Hyperparameters : Setpoint suhu 25–28°C, kelembaban 60–70%, prioritas aktuator di scheduler
+
+  Config file     : config.yaml
+  Random seed     : 42
+  Hyperparameters :
+      • Lama eksperimen              : 7 hari
+      • Waktu pengujian              : 8 jam/hari
+      • Logging interval             : 5 menit
+      • Scheduler Mode               : Adaptive Energy Scheduler
+      • Temperature Setpoint         : 26°C
+      • Humidity Setpoint            : 65% RH
+      • Minimum Light Intensity      : 500 lux
+      • Minimum Battery Capacity     : 25%
+      • Critical Battery Capacity    : 15%
+      • Sampling Data Sensor         : Setiap 5 menit
+      • Baseline                     : Rule-Based Energy Management
+      • Treatment                    : Adaptive Energy Scheduler
 
 Reproducibility Check:
-  [✓] Dependency terdokumentasi (requirements.txt / environment.yml)
-  [✓] Seed ditetapkan di semua level (Python, NumPy, framework)
-  [✓] Config di version control
-  [✓] README instruksi reproduksi lengkap
+
+[✓] Dependency terdokumentasi (requirements.txt / lock file)
+[✓] Random seed ditetapkan di semua level (Python, NumPy, Framework)
+[✓] Seluruh konfigurasi menggunakan file config.yaml
+[✓] Konfigurasi dikelola menggunakan Version Control (Git)
+[✓] Struktur folder penelitian terdokumentasi
+[✓] README berisi langkah instalasi dan reproduksi eksperimen
+[✓] Logging data dilakukan secara otomatis setiap 5 menit
+[✓] Dataset hasil eksperimen disimpan dalam format CSV
+[✓] Source code terdokumentasi dengan baik
 ```
 
 ---
@@ -112,23 +139,28 @@ Dokumentasikan environment untuk eksperimen Anda (boleh environment saat ini ata
 
 | Komponen | Spesifikasi |
 |----------|------------|
-| CPU | AMD Ryzen 7 7435HS (16 CPUs, ~3.1 GHz) |
+| CPU | AMD Ryzen™ 7 7435HS (8 Core, 16 Thread, Base Clock ±3.10 GHz) |
 | RAM | 16 GB DDR5 |
-| GPU | NVIDIA GeForce RTX (jika tersedia) / Integrated AMD Radeon Graphics |
+| GPU | NVIDIA GeForce RTX 3050 Laptop GPU (Dedicated VRAM 4 GB, Total Graphics Memory ±12 GB) |
 | OS | Windows 11 Home Single Language 64-bit (Build 26200) |
-| Runtime |Python 3.10+ |
-| Framework | Python (analisis), MicroPython / ESP-IDF (ESP32) |
+| Runtime |Python 3.13 |
+| Framework | Arduino ESP32 Framework, Arduino IDE 2.3.x, Visual Studio Code |
 | Random Seed | 42 |
 
 **Dependencies (minimal 5):**
 
 | Library | Version | Alasan Dibutuhkan |
 |---------|---------|-------------------|
-| pandas | 2.0+ | Analisis log data sensor & performa |
-| scipy | Latest | Uji statistik |
-| matplotlib/seaborn | Latest | Visualisasi tren |
-| PyYAML | Latest | Config-driven architecture |
-| requests / urequests | Latest | Komunikasi IoT |
+| numpy | 2.3.1 | Operasi numerik, perhitungan efisiensi energi, serta pengolahan data sensor. |
+| pandas | 2.3.1 | Mengolah data hasil logging sensor, energi panel surya, dan status sistem dalam bentuk DataFrame. |
+| matplotlib | 3.10.3 | Membuat grafik efisiensi energi, uptime sistem, konsumsi energi, dan performa eksperimen. |
+| scipy | 1.16.0 | Melakukan uji statistik (Independent Sample T-Test atau Mann-Whitney U Test) untuk membandingkan baseline dan adaptive scheduler. |
+| statsmodels | 0.14.5 | Analisis statistik lanjutan seperti effect size, confidence interval, dan validasi model eksperimen. |
+| PyYAML | 6.0.2 | Membaca file konfigurasi (config.yaml) sehingga parameter eksperimen dapat diubah tanpa mengubah source code. |
+| requests | 2.32.4 | Mengirim dan menerima data melalui HTTP API apabila sistem IoT terhubung ke server atau cloud. |
+| paho-mqtt | 2.1.0 | Komunikasi menggunakan protokol MQTT antara ESP32 dan server monitoring IoT. |
+| pyserial | 3.5 | Komunikasi serial antara komputer dan ESP32 selama proses debugging, monitoring, dan pengambilan data. |
+| openpyxl | 3.1.5 | Mengekspor hasil analisis dan ringkasan eksperimen ke dalam format Microsoft Excel (.xlsx). |
 
 ---
 
@@ -145,18 +177,24 @@ Rancang tes repeatability sederhana: jalankan kode yang sama 3× di environment 
 **Jika hasil berbeda, kemungkinan penyebab:**
 
 > Penyebab umum non-repeatability:
-> - **Thermal throttling** — CPU/GPU overheating pada run berturut-turut → clock speed turun → waktu eksekusi berubah
-> - **Background process** — antivirus scan, update OS, atau cloud sync aktif saat run berlangsung
-> - **Cache dari run sebelumnya** — hasil tersimpan di memori/disk sehingga run berikutnya tidak menjalankan komputasi penuh
-> - **Random state tidak dikontrol di semua level** — Python seed di-set, tapi NumPy/PyTorch/TensorFlow punya seed independen
+> - **Thermal throttling** — penurunan performa CPU atau GPU akibat peningkatan suhu perangkat selama eksperimen sehingga memengaruhi waktu pemrosesan.
+> - **Background process** — seperti Windows Update, antivirus, atau sinkronisasi cloud yang berjalan bersamaan dan mengonsumsi sumber daya sistem.
+> - **Cache dari run sebelumnya** — sehingga sebagian data atau proses masih tersimpan di memori dan memengaruhi hasil pengujian berikutnya
+> - **Random state tidak dikontrol secara menyeluruh,** — misalnya hanya Python yang menggunakan seed, sedangkan library lain masih menghasilkan nilai acak yang berbeda.
+> - **Fluktuasi jaringan Wi-Fi**, yang dapat menyebabkan keterlambatan komunikasi antara ESP32 dan komputer monitoring.
+> - **Sensor belum dikalibrasi**, sehingga pembacaan suhu, kelembaban, atau energi tidak konsisten.
+> - **Fluktuasi intensitas cahaya** pada simulasi panel surya yang tidak sesuai dengan skenario eksperimen.
 
 ___________________________________________________
 
 **Checklist kontrol yang sudah diterapkan:**
-- [✓] Random seed di-set di semua level
-- [✓] Tidak ada background process yang mengganggu
-- [✓] Cache dibersihkan antar-run
-- [✓] Config file yang sama untuk semua run
+- [✓] Random seed di-set pada seluruh proses eksperimen (Python dan library terkait).
+- [✓] Tidak terdapat background process yang mengganggu selama eksperimen.
+- [✓] Cache dibersihkan sebelum setiap pengujian.
+- [✓] Firmware ESP32 yang digunakan pada setiap pengujian identik.
+- [✓] Seluruh sensor dikalibrasi sebelum eksperimen dimulai.
+- [✓] Logging data dilakukan otomatis setiap 5 menit.
+- [✓] Pengujian dilakukan menggunakan perangkat keras dan perangkat lunak yang sama.
 
 ---
 
@@ -165,43 +203,235 @@ ___________________________________________________
 Tulis README minimum untuk eksperimen Anda (6 komponen wajib).
 
 ```
-# Judul Eksperimen: Evaluasi Adaptive Energy Scheduler pada Sistem Hidroponik IoT
+# Judul Eksperimen:
+Evaluasi Performa Desain Integrasi IoT Holistik dengan Adaptive Energy Scheduler Berbasis Panel Surya pada Sistem Hidroponik Cerdas di Kondisi Fluktuasi Energi Daerah Terpencil
 
 ## 1. Environment
-> CPU: AMD Ryzen 7 7435HS (16 core, ~3.1 GHz)
-> RAM: 16 GB
-> OS: Windows 11 Home Single Language 64-bit (Build 26200)
-> Runtime: Python 3.10+
-> Python (analisis), MicroPython/ESP-IDF (ESP32)
+
+Perangkat keras (Hardware)
+- Laptop : ASUS TUF Gaming A15 FA506NCR
+- CPU : AMD Ryzen™ 7 7435HS (8 Core, 16 Thread, ±3.10 GHz)
+- RAM : 16 GB DDR5
+- GPU : NVIDIA GeForce RTX 3050 Laptop GPU (VRAM 4 GB)
+- Storage : SSD NVMe ±512 GB
+- Mikrokontroler : ESP32 DevKit V1
+- Sensor : DHT22, BH1750, INA219, ACS712
+- Aktuator : Pompa Air DC, Kipas DC, LED Grow Light
+- Sumber Energi : Solar Panel 100 Wp + Baterai 12V 20Ah
+
+Perangkat lunak (Software)
+- Windows 11 Home Single Language 64-bit (Build 26200)
+- Python 3.13
+- Arduino IDE 2.3.x
+- Visual Studio Code
+- Git
+
+Library utama
+- numpy
+- pandas
+- matplotlib
+- scipy
+- statsmodels
+- PyYAML
+- requests
+- paho-mqtt
+- pyserial
+- openpyxl
+
+Random Seed
+42
+
+---
 
 ## 2. Installation
-> ```bash
-# Buat environment baru
-conda env create -f environment.yml
-conda activate hydroponic-iot
 
-# Atau dengan pip
+### Clone Repository
+
+git clone https://github.com/username/adaptive-energy-scheduler.git
+
+cd adaptive-energy-scheduler
+
+### Install seluruh dependency
+
 pip install -r requirements.txt
 
+### Upload firmware ke ESP32
+
+Buka project menggunakan Arduino IDE kemudian upload firmware ke board ESP32 DevKit V1.
+
+### Hubungkan perangkat
+
+- Panel Surya
+- Solar Charge Controller
+- Battery
+- ESP32
+- DHT22
+- BH1750
+- INA219
+- ACS712
+- Relay
+- Pompa Air
+- Kipas
+- LED Grow Light
+
+Pastikan seluruh sensor telah dikalibrasi sebelum eksperimen dimulai.
+
+---
+
 ## 3. Data
-> Data sensor real-time (DHT22, power meter, intensitas cahaya) selama 7 hari × 8 jam/hari.
-> Format: CSV + JSON log (timestamp, suhu, kelembaban, energi, uptime).
-> Variasi simulasi cuaca dilakukan secara acak setiap hari.
+
+Sumber Data
+
+Data berasal dari hasil monitoring sistem hidroponik berbasis Internet of Things (IoT) selama proses eksperimen menggunakan Adaptive Energy Scheduler dan Baseline Rule-Based.
+
+Format Data
+
+CSV (.csv)
+
+JSON (.json)
+
+Ukuran Data
+
+Data dicatat setiap 5 menit selama 7 hari × 8 jam pengujian aktif.
+
+Isi Dataset
+
+- Timestamp
+- Suhu (°C)
+- Kelembaban (%RH)
+- Intensitas Cahaya (Lux)
+- Tegangan Panel Surya (Volt)
+- Arus Panel Surya (Ampere)
+- Daya Panel Surya (Watt)
+- Kapasitas Baterai (%)
+- Konsumsi Energi (Wh)
+- Produksi Energi (Wh)
+- Status Pompa
+- Status Kipas
+- Status Lampu
+- Efisiensi Energi (%)
+- Uptime Sistem (%)
+
+Folder Dataset
+
+dataset/
+│
+├── baseline.csv
+├── adaptive.csv
+├── sensor_log.csv
+└── energy_log.csv
+
+---
 
 ## 4. Execution
-> python run_experiment.py --config config.yaml --mode holistic --duration 8
-# Untuk baseline:
-python run_experiment.py --config config.yaml --mode baseline --duration 8
+
+Langkah menjalankan eksperimen
+
+1. Upload firmware ke ESP32.
+2. Hubungkan seluruh sensor dan aktuator.
+3. Pastikan koneksi Wi-Fi aktif.
+4. Jalankan monitoring data.
+5. Jalankan Adaptive Energy Scheduler.
+6. Simpan seluruh data logging.
+7. Analisis hasil menggunakan Python.
+
+Contoh perintah
+
+python monitoring.py
+
+python scheduler.py
+
+python analysis.py
+
+---
 
 ## 5. Configuration
-> File utama: config.yaml (energy thresholds, scheduler logic, setpoint suhu/kelembaban)
-> Random seed: 42 (untuk reproducibility)
-> Parameter kunci: scheduler_mode: adaptive, energy_priority: [pompa, lampu, kipas]
+
+File konfigurasi utama
+
+config.yaml
+
+Parameter yang digunakan
+
+experiment:
+    duration_day: 7
+    hour_per_day: 8
+    logging_interval: 300
+
+scheduler:
+    mode: adaptive
+
+environment:
+    temperature_setpoint: 26
+    humidity_setpoint: 65
+
+battery:
+    minimum_capacity: 25
+    critical_capacity: 15
+
+lighting:
+    minimum_lux: 500
+
+random_seed: 42
+
+Parameter Kunci
+
+- Durasi eksperimen : 7 hari
+- Lama pengujian : 8 jam/hari
+- Logging : setiap 5 menit
+- Temperature Setpoint : 26°C
+- Humidity Setpoint : 65% RH
+- Minimum Lux : 500 lux
+- Battery Minimum : 25%
+- Scheduler : Adaptive Energy Scheduler
+
+---
 
 ## 6. Expected Output
-> Log file: logs/2026-06-28_holistic.csv (kolom: timestamp, energi_produced, energi_consumed, uptime, deviasi_suhu, deviasi_kelembaban)
-> Grafik: plots/efisiensi_harian.png, plots/uptime_trend.png
-> Ringkasan: summary.txt berisi mean, std, effect size, dan statistik uji
+
+Eksperimen menghasilkan beberapa luaran sebagai berikut.
+
+Dataset
+
+- baseline.csv
+- adaptive.csv
+- sensor_log.csv
+- energy_log.csv
+
+Grafik
+
+- Grafik Efisiensi Energi
+- Grafik Konsumsi Energi
+- Grafik Produksi Energi
+- Grafik Uptime Sistem
+- Grafik Deviasi Suhu
+- Grafik Deviasi Kelembaban
+
+Laporan Statistik
+
+- Mean
+- Median
+- Standar Deviasi
+- Independent Sample T-Test
+- Mann-Whitney U Test
+- Effect Size (Cohen's d)
+
+Output Folder
+
+result/
+│
+├── summary.xlsx
+├── energy_efficiency.png
+├── uptime.png
+├── statistics.pdf
+└── experiment_report.pdf
+
+Output yang Diharapkan
+
+- Adaptive Energy Scheduler mampu meningkatkan efisiensi energi minimal 8% dibandingkan sistem Rule-Based.
+- Sistem mempertahankan uptime operasional yang tinggi selama periode eksperimen.
+- Deviasi suhu dan kelembaban tetap berada pada rentang setpoint yang telah ditentukan.
+- Seluruh data eksperimen terdokumentasi dan dapat direproduksi menggunakan konfigurasi yang sama.
 ```
 
 ---
@@ -209,10 +439,20 @@ python run_experiment.py --config config.yaml --mode baseline --duration 8
 ## Refleksi
 
 > Apakah eksperimen Anda saat ini bisa direproduksi oleh orang lain tanpa bantuan Anda? Komponen apa yang masih hilang?
+Saat ini eksperimen telah memiliki dokumentasi yang cukup lengkap mengenai spesifikasi perangkat keras dan perangkat lunak, struktur environment, dependensi, konfigurasi eksperimen, serta prosedur pelaksanaan penelitian. Dokumentasi tersebut memungkinkan eksperimen dijalankan kembali pada environment yang sama dengan konfigurasi yang identik sehingga memenuhi prinsip repeatability. Namun, penelitian ini belum sepenuhnya memenuhi prinsip reproducibility karena implementasi sistem, pengujian nyata, dan dokumentasi hasil eksperimen belum selesai dilaksanakan.
 
+Agar penelitian dapat direproduksi oleh peneliti lain tanpa bantuan penulis, masih diperlukan beberapa komponen tambahan, seperti repositori GitHub yang berisi seluruh source code, dokumentasi wiring perangkat keras ESP32 beserta sensor dan aktuator, firmware final yang digunakan, file konfigurasi (config.yaml), daftar dependensi (requirements.txt) dengan versi yang dikunci (dependency locking), dataset hasil eksperimen, serta panduan instalasi dan pelaksanaan eksperimen secara lengkap. Selain itu, hasil pengujian aktual beserta analisis statistik juga perlu disertakan agar peneliti lain dapat memverifikasi dan memperoleh hasil yang serupa.
 **Level saat ini:** [✓] Repeatability / [ ] Reproducibility / [ ] Belum keduanya
 **Komponen yang belum terdokumentasi:**
-> Instruksi flash firmware ESP32 (versi MicroPython/ESP-IDF yang digunakan + langkah detail).
-> Contoh file config.yaml lengkap dengan semua parameter.
-> Skrip otomatis untuk membersihkan cache dan restart sistem antar sesi harian.
-> Versi library yang exact di environment.yml (saat ini masih Latest di beberapa package).
+> Source code final penelitian.
+> Repositori GitHub yang berisi seluruh proyek dan riwayat versi.
+> Diagram wiring ESP32, sensor, aktuator, dan panel surya.
+> Firmware ESP32 beserta langkah instalasinya.
+> File requirements.txt dengan versi library yang dikunci.
+> File config.yaml final yang digunakan selama eksperimen.
+> Dataset hasil eksperimen (baseline dan adaptive scheduler).
+> Dokumentasi proses kalibrasi sensor.
+> Hasil pengujian selama 7 hari × 8 jam beserta file log.
+> Hasil analisis statistik (Independent Sample T-Test/Mann-Whitney U Test dan Effect Size).
+> Dokumentasi grafik hasil eksperimen (efisiensi energi, uptime, konsumsi energi, dan deviasi lingkungan).
+> README final yang menguraikan langkah instalasi, konfigurasi, pelaksanaan eksperimen, dan reproduksi penelitian secara lengkap.
