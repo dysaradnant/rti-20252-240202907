@@ -70,28 +70,30 @@ EXECUTION PLAN
 
 | Run # | Skenario | Seed | Parameter | Status | Waktu | Output File |
 |-------|----------|------|-----------|--------|-------|-------------|
-| 1     | Baseline (Rule-based) | 42  | mode=rule_based | Planned | - | run_01_baseline.csv |
-| 2     | Baseline (Rule-based) | 123 | mode=rule_based | Planned | - | run_02_baseline.csv |
-| 3     | Baseline (Rule-based) | 456 | mode=rule_based | Planned | - | run_03_baseline.csv |
-| 4     | Baseline (Rule-based) | 789 | mode=rule_based | Planned | - | run_04_baseline.csv |
-| 5     | Baseline (Rule-based) | 101 | mode=rule_based | Planned | - | run_05_baseline.csv |
-| 6     | Treatment (Holistic)  | 42  | mode=adaptive_scheduler | Planned | - | run_06_treatment.csv |
-| 7     | Treatment (Holistic)  | 123 | mode=adaptive_scheduler | Planned | - | run_07_treatment.csv |
-| 8     | Treatment (Holistic)  | 456 | mode=adaptive_scheduler | Planned | - | run_08_treatment.csv |
-| 9     | Treatment (Holistic)  | 789 | mode=adaptive_scheduler | Planned | - | run_09_treatment.csv |
-| 10    | Treatment (Holistic)  | 101 | mode=adaptive_scheduler | Planned | - | run_10_treatment.csv |
+| 1 | Baseline Rule-Based | 42 | Config Default | Planned | Hari-1 | baseline_run01.csv |
+| 2 | Baseline Rule-Based | 123 | Config Default | Planned | Hari-2 | baseline_run02.csv |
+| 3 | Baseline Rule-Based | 256 | Config Default | Planned | Hari-3 | baseline_run03.csv |
+| 4 | Baseline Rule-Based | 512 | Config Default | Planned | Hari-4 | baseline_run04.csv |
+| 5 | Baseline Rule-Based | 1024 | Config Default | Planned | Hari-5 | baseline_run05.csv |
+| 6 | Adaptive Scheduler | 42 | Adaptive Mode | Planned | Hari-1 | adaptive_run01.csv |
+| 7 | Adaptive Scheduler | 123 | Adaptive Mode | Planned | Hari-2 | adaptive_run02.csv |
+| 8 | Adaptive Scheduler | 256 | Adaptive Mode | Planned | Hari-3 | adaptive_run03.csv |
+| 9 | Adaptive Scheduler | 512 | Adaptive Mode | Planned | Hari-4 | adaptive_run04.csv |
+|10 | Adaptive Scheduler |1024 | Adaptive Mode | Planned | Hari-5 | adaptive_run05.csv |
 
-
-Jumlah runs per skenario : 5
-Total runs               : 10
+Jumlah Run per Skenario : 5 Run
+Jumlah Skenario         : 2
+Total Run               : 10 Run
 
 DATA LOG (per run):
-  Run ID    : run_01_baseline
-  Timestamp : 2026-06-28 14:00:00
-  Skenario  : Baseline / Treatment
-  Input     : Sensor readings (suhu, kelembaban, intensitas cahaya, energi surya)
-  Output    : Efisiensi energi (%), Uptime (jam & %), Deviasi suhu/kelembaban, Pertumbuhan tanaman
-  Anomali   : Sensor disconnect / baterai rendah / simulasi cuaca ekstrem (jika ada)
+  Run ID    : run_01
+  Timestamp : 2026-07-10 08:00:00
+  Skenario  : Adaptive Energy Scheduler
+  Seed      : 42
+  Input     : Temperatur Awal, Kelembaban Awal, Intensitas Cahaya, Tegangan Panel Surya, Arus Panel, Kapasitas Baterai, Status Pompa, Status Lampu, Status Kipas
+  Output    : Temperatur Akhir, Kelembaban Akhir, Efisiensi Energi, Total Produksi Energi, Total Konsumsi Energi, Persentase Uptime, Deviasi Temperatur, Deviasi Kelembaban, Status Scheduler, Response Time Scheduler
+  Metadata  : Lama Eksekusi, CPU Usage, RAM Usage, GPU Usage, Wi-Fi RSSI, Jumlah Error, Warning, Exception, Status Run
+  Anomali   : Tidak Ada / Ada
   Catatan   : Catatan khusus (thermal throttling, restart, perubahan manual, dll)
 ```
 
@@ -101,18 +103,18 @@ DATA LOG (per run):
 
 Susun execution plan untuk eksperimen Anda. Tentukan skenario, jumlah run, dan seed sebelum eksekusi.
 
-| Run # | Skenario | Seed | Parameter Kunci | Status |
-|-------|----------|------|----------------|--------|
-| 1 | Baseline (Rule-based)* | 42 | mode=rule_based | Planned |
-| 2 | Baseline (Rule-based)* | 123 | mode=rule_based | Planned |
-| 3 | Baseline (Rule-based)* | 456 | mode=rule_based | Planned |
-| 4 | Baseline (Rule-based)* | 789 | mode=rule_based | Planned |
-| 5 | Baseline (Rule-based)* | 101 | mode=rule_based | Planned |
-| 6 | Treatment (Holistic)* | 42 | mode=adaptive_scheduler | Planned |
-| 7 | Treatment (Holistic)* | 123 | mode=adaptive_scheduler | Planned |
-| 8 | Treatment (Holistic)* | 456 | mode=adaptive_scheduler | Planned |
-| 9 | Treatment (Holistic)* | 789 | mode=adaptive_scheduler | Planned |
-| 10 | Treatment (Holistic)* | 101 | mode=adaptive_scheduler | Planned |
+| Run # | Skenario | Seed | Parameter | Status | Waktu | Output File |
+|-------|----------|------|-----------|--------|-------|-------------|
+| 1 | Baseline Rule-Based | 42 | Config Default | Planned | Hari-1 | baseline_run01.csv |
+| 2 | Baseline Rule-Based | 123 | Config Default | Planned | Hari-2 | baseline_run02.csv |
+| 3 | Baseline Rule-Based | 256 | Config Default | Planned | Hari-3 | baseline_run03.csv |
+| 4 | Baseline Rule-Based | 512 | Config Default | Planned | Hari-4 | baseline_run04.csv |
+| 5 | Baseline Rule-Based | 1024 | Config Default | Planned | Hari-5 | baseline_run05.csv |
+| 6 | Adaptive Scheduler | 42 | Adaptive Mode | Planned | Hari-1 | adaptive_run01.csv |
+| 7 | Adaptive Scheduler | 123 | Adaptive Mode | Planned | Hari-2 | adaptive_run02.csv |
+| 8 | Adaptive Scheduler | 256 | Adaptive Mode | Planned | Hari-3 | adaptive_run03.csv |
+| 9 | Adaptive Scheduler | 512 | Adaptive Mode | Planned | Hari-4 | adaptive_run04.csv |
+|10 | Adaptive Scheduler |1024 | Adaptive Mode | Planned | Hari-5 | adaptive_run05.csv |
 
 
 **Total skenario:** 2
@@ -128,27 +130,47 @@ Desain format data log untuk eksperimen Anda. Tentukan field apa saja yang akan 
 **Identitas:**
 | Field | Contoh |
 |-------|--------|
-| Run ID | run_01_treatment |
-| Timestamp | 2026-06-28 14:30:00 |
-| Skenario | Treatment (Holistic) |
+| Run ID | run_01 |
+| Experiment ID | EXP-2026-001 |
+| Timestamp | 2026-07-10 08:00:00 |
+| Tanggal | 10 Juli 2026 |
+| Hari Pengujian | Hari-1 |
+| Skenario| Adaptive Scheduler |
+| Operator | Dysar |
 
 **Konfigurasi:**
 | Field | Contoh |
 |-------|--------|
-| Seed | 42 |
-| Code version | commit abc1234 (Git) |
-| Mode Scheduler | adaptive_scheduler |
-| Energy Threshold | 30% baterai minimum |
+| Random Seed | 42 |
+| Firmware Version | v1.0 |
+| Code Version | Git Commit a1b2c3 |
+| Config File | config.yaml |
+| Scheduler Mode | Adaptive |
+| Temperature Setpoint | 26°C |
+| Humidity Setpoint | 65% RH |
+| Minimum Lux | 500 lux |
+| Minimum Battery | 500 lux |
+| Critical Battery |15% |
+| Logging Interval | 300 detik |
+| Sampling Rate | 5 menit |
 
 **Hasil:**
 | Metrik | Tipe Data | Range Valid |
 |--------|----------|-------------|
-| Efisiensi Penggunaan Energi | float | 0 – 100 (%) |
-| Kestabilan Operasional (Uptime) | float | 0 – 8 (jam) / 0–100 (%) |
-| Deviasi Suhu rata-rata | float | 0 – 5 (°C) |
-| Deviasi Kelembaban rata-rata | float | 0 – 10 (%RH) |
-| Tinggi Tanaman rata-rata | float | 0 – 30 (cm) |
-| Jumlah Daun rata-rata | integer | 0 – 50 (helai) |
+| Suhu | float | 15–45°C |
+| Kelembaban | float |20–100% RH |
+| Intensitas Cahaya | 0–100000 lux |
+| Tegangan Panel | float | 0–24 Volt |
+| Arus Panel | float | 0–10 Ampere |
+| Daya Panel | float | 0–200 Watt |
+| Kapasitas Baterai | float | 0–100% |
+| Konsumsi Energi | float | ≥0 Wh |
+| Produksi Energi | float | ≥0 Wh |
+| Efisiensi Energi | float | 0–100% |
+| Deviasi Suhu | float | ±10°C |
+| Deviasi Kelembaban | float | ±20% RH |
+| Response Time Scheduler | float | 0–10 detik |
+| Uptime Sistem | float | 0–100% |
 
 **Format output:** [✓] CSV / [✓] JSON / [ ] Database / [ ] Lainnya: ____
 
@@ -160,10 +182,14 @@ Rencanakan bagaimana menangani anomali. Untuk setiap jenis, tentukan langkah yan
 
 | Jenis Anomali | Contoh | Tindakan |
 |---------------|--------|----------|
-| Run gagal (crash) | ESP32 disconnect, sensor error, program crash | 1. Dokumentasikan error lengkap di log. 2. Restart sistem & sensor. 3. Re-run dengan catatan "retry after crash". 4. Jika berulang, analisis penyebab (kabel / power) |
-| Hasil ekstrem (outlier) | Efisiensi energi >110% atau negatif | 1. Periksa sensor (kalibrasi ulang). 2. Dokumentasikan sebagai outlier. 3. Analisis sensitivitas (apakah karena cuaca simulasi?). 4. Tetap simpan, jangan hapus. |
-| Waktu eksekusi anomali | Run jauh lebih lambat dari biasanya | 1. Cek thermal throttling Ryzen 7 (gunakan HWMonitor). 2. Tutup aplikasi latar belakang. 3. Catat di log: "thermal throttling detected". |
-| Inkonsistensi dengan run lain | Satu run efisiensi jauh lebih rendah | 1. Bandingkan log cuaca & status baterai. 2. Dokumentasikan sebagai variabilitas alami. 3. Sertakan dalam analisis sensitivitas. |
+| Run gagal (crash) | ESP32 restart, aplikasi Python berhenti, koneksi MQTT terputus | Dokumentasikan penyebab, periksa log sistem, perbaiki penyebab, kemudian lakukan re-run dengan konfigurasi yang sama. |
+| Hasil ekstrem (outlier) | Efisiensi energi mencapai 100% atau 0% secara tidak wajar | Verifikasi data sensor, cek konfigurasi, bandingkan dengan run lain. Jika terbukti kesalahan sistem, lakukan re-run; jika valid, tetap dicatat sebagai temuan. |
+| Waktu eksekusi anomali | Waktu proses jauh lebih lama dibandingkan run lainnya | Periksa penggunaan CPU, RAM, jaringan, dan proses latar belakang. Catat penyebab dan tentukan apakah perlu mengulang eksperimen. |
+| Inkonsistensi dengan run lain | Nilai efisiensi berbeda jauh padahal konfigurasi sama | Bandingkan log eksperimen, periksa random seed, firmware, konfigurasi, dan kondisi lingkungan. Jika ditemukan kesalahan teknis, lakukan re-run. |
+| Sensor tidak merespons | DHT22 atau BH1750 gagal mengirim data | Kalibrasi ulang atau ganti sensor, dokumentasikan waktu kegagalan, kemudian ulangi run jika data utama tidak lengkap. |
+| Gangguan komunikasi | Wi-Fi terputus, MQTT timeout | Dokumentasikan durasi gangguan, lakukan koneksi ulang, dan lanjutkan eksperimen jika data masih dapat dipulihkan. |
+| Kapasitas baterai di bawah batas minimum | Baterai turun di bawah 15% sebelum eksperimen selesai | Catat kondisi sebagai bagian dari hasil eksperimen, evaluasi keputusan Adaptive Energy Scheduler, dan ulangi run hanya jika penyebabnya bukan bagian dari skenario penelitian. |
+| Kesalahan konfigurasi | Nilai pada config.yaml berbeda dengan execution plan | Hentikan eksperimen, perbaiki konfigurasi, dokumentasikan perubahan, lalu jalankan ulang seluruh run terkait. |
 
 **Prinsip:** Detect → Investigate → Document → Decide
 
@@ -174,6 +200,6 @@ Rencanakan bagaimana menangani anomali. Untuk setiap jenis, tentukan langkah yan
 > Pernahkah Anda melaporkan hasil riset/tugas dari single run? Apa risikonya? Bagaimana multiple run mengubah kepercayaan terhadap hasil?
 
 **Pengalaman sebelumnya:**
-> Ya, beberapa kali di tugas kuliah atau proyek kecil saya pernah melaporkan hasil dari single run saja (misalnya testing satu kali prototipe IoT atau satu kali training model). Hasilnya terlihat bagus di layar, tapi sebenarnya sangat rentan.
+Pada beberapa tugas praktikum maupun proyek sebelumnya, hasil eksperimen umumnya diperoleh hanya dari satu kali pengujian (single run). Pendekatan tersebut cukup untuk menunjukkan bahwa sistem dapat berjalan sesuai fungsi yang diharapkan, namun belum cukup untuk membuktikan bahwa hasil yang diperoleh benar-benar konsisten dan dapat dipercaya. Dalam banyak kasus, hasil dari satu kali pengujian dapat dipengaruhi oleh kondisi lingkungan, performa perangkat keras, proses yang berjalan di latar belakang, maupun faktor acak (randomness) yang tidak dikendalikan.
 **Yang akan dilakukan berbeda:**
-> Mulai sekarang saya akan selalu menjalankan minimal 5 run per skenario dengan seed berbeda seperti yang direncanakan di Execution Plan. Setiap run akan dicatat lengkap dengan timestamp, konfigurasi, dan anomali.
+Pada penelitian ini, pendekatan eksperimen dirancang berbeda dengan menerapkan prinsip multiple run sebagaimana direkomendasikan dalam WS-10. Setiap skenario eksperimen, yaitu Baseline (Rule-Based Energy Management) dan Adaptive Energy Scheduler, akan dijalankan sebanyak lima kali menggunakan random seed yang telah ditentukan sebelum eksperimen dimulai. Seluruh run dilakukan menggunakan konfigurasi perangkat keras, perangkat lunak, dan parameter eksperimen yang sama sehingga perbedaan hasil benar-benar mencerminkan perbedaan metode yang diuji.
