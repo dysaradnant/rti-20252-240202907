@@ -65,25 +65,26 @@ Keduanya **saling melengkapi**:
 ```
 RESULT PRESENTATION PLAN
 
-Research Question : ____________________
-Metrik Utama      : ____________________
+Research Question : Bagaimana kinerja Adaptive Energy Scheduler dibandingkan dengan Rule-Based Scheduler dalam mengoptimalkan penggunaan energi pada sistem panel surya menggunakan dataset NASA POWER?
+Metrik Utama      : Rule-Based Efficiency (%), Adaptive Scheduler Efficiency (%), Improvement (%), State of Charge (SOC), Total Load (Wh), PV Energy (Wh)
 
 Tabel Hasil:
-| Skenario | Metrik 1 (mean ± std) | Metrik 2 (mean ± std) | n |
+| Skenario | Rule Efficiency (Mean ± Std) | Adaptive Efficiency (Mean ± Std) | n |
 |----------|----------------------|----------------------|---|
-|          |                      |                      |   |
+| Adaptive Energy Scheduler | 40.40 ± 0.14 % | 42.19 ± 0.07 % | 5 |
 
 Visualisasi yang Direncanakan:
 | # | Jenis Grafik | Pesan Utama | Metrik |
 |---|-------------|-------------|--------|
-| 1 |             |             |        |
-| 2 |             |             |        |
+| 1 | Bar Chart | Perbandingan Rule-Based dan Adaptive Scheduler | Rule Efficiency vs Adaptive Efficiency |
+| 2 | Line Chart | Perubahan SOC selama eksperimen | SOC (%) |
+| 2 | Line Chart | Produksi energi panel surya harian  | PV Energy (Wh) |
 
 Bias Check:
-  [ ] Y-axis mulai dari 0 (atau dijustifikasi)
-  [ ] Error bar/CI ditampilkan
-  [ ] Semua data disertakan (tidak cherry-picked)
-  [ ] Tidak menggunakan 3D tanpa alasan
+  [✓] Y-axis mulai dari 0 (atau dijustifikasi)
+  [✓] Error bar/CI ditampilkan
+  [✓] Semua data disertakan (tidak cherry-picked)
+  [✓] Tidak menggunakan grafik 3D 
 ```
 
 ---
@@ -92,17 +93,35 @@ Bias Check:
 
 Buat tabel hasil eksperimen Anda (boleh dengan data simulasi jika belum punya data riil).
 
-| Skenario | Metrik 1 (mean ± std) | Metrik 2 (mean ± std) | n |
+| Skenario | Rule Efficiency (Mean ± Std) | Adaptive Efficiency (Mean ± Std) | Average SOC | Jumlah Run |
 |----------|----------------------|----------------------|---|
-| *Contoh: BERT-base* | *88.4 ± 1.2%* | *45.2 ± 3.1 min* | *10* |
-| | | | |
-| | | | |
+| Adaptive Energy Scheduler | 40.40 ± 0.14 % | 42.19 ± 0.07 % | 51.0 % | 5 |
+
+Ringkasan Hasil Setiap Run
+
+| Run | Rule Efficiency (%) | Adaptive Efficiency (%) | Improvement (%) | Average SOC (%) |
+|-----|---------------------|------------------------ |-----------------|-----------------|
+| 1 | 40.50 | 42.24 | 1.74 | 51.05 |
+| 2 | 40.17 | 42.07 | 1.91 | 50.82 |
+| 3 | 40.40 | 42.19 | 1.79 | 50.94 |
+| 4 | 40.46 | 42.22 | 1.76 | 51.01 |
+| 5 | 40.49 | 42.24 | 1.74 | 51.05 |
+
+Statistik Deskriptif
+| Parameter | Nilai |
+|-----|---------------------|
+| Mean Rule Efficiency | 40.40 % |
+| Standard Deviasi Rule | 0.14 |
+| Mean Adaptive Efficiency | 42.19 % |
+| Standard Deviasi Adaptive | 0.07 |
+| Mean Improvement | 1.79 % |
+| Jumlah Dataset | 8784 data |
 
 **Checklist tabel:**
-- [ ] Self-contained (judul jelas, satuan ada, N tercantum)
-- [ ] Mean ± std (bukan single number)
-- [ ] Diurutkan berdasarkan metrik utama
-- [ ] Format konsisten di semua baris
+- [✓] Self-contained (judul jelas, satuan ada, N tercantum)
+- [✓] Mean ± std (bukan single number)
+- [✓] Diurutkan berdasarkan metrik utama
+- [✓] Format konsisten di semua baris
 
 ---
 
@@ -112,9 +131,9 @@ Rencanakan 2-3 grafik untuk menyajikan data dari Latihan 1. Setiap grafik = satu
 
 | # | Jenis Grafik | Pesan | Data yang Digunakan |
 |---|-------------|-------|---------------------|
-| 1 | *Contoh: Bar chart + error bar* | *Perbandingan accuracy antar 3 model* | *Mean accuracy ± std* |
-| 2 | *Box plot* | *Distribusi F1 per model* | *Semua run F1* |
-| 3 | *Scatter plot* | *Trade-off accuracy vs training time* | *Mean accuracy vs mean time* |
+| 1 | Bar Chart | Adaptive Scheduler memiliki efisiensi lebih tinggi dibanding Rule-Based Scheduler. | Mean Rule Efficiency dan Mean Adaptive Efficiency |
+| 2 | Line Chart | Menampilkan perubahan State of Charge (SOC) selama proses eksperimen. | SOC setiap jam hasil simulasi |
+| 3 | Line Chart | Menampilkan perubahan produksi energi panel surya berdasarkan dataset NASA POWER. | PV Energy (Wh) |
 
 ---
 
@@ -126,14 +145,14 @@ Evaluasi visualisasi berikut untuk bias (skenario dari contoh):
 
 | Pertanyaan | Jawaban |
 |-----------|---------|
-| Apakah Y-axis menyesatkan? | *Contoh: Ya — A terlihat 2× B padahal beda 0.4%* |
-| Apakah error bar ditampilkan? | |
-| Apakah semua kondisi ditampilkan? | |
-| Apa solusinya? | |
+| Apakah Y-axis menyesatkan? | Tidak. Seluruh grafik menggunakan skala yang konsisten. |
+| Apakah error bar ditampilkan? | Ya. Nilai standar deviasi dicantumkan pada hasil. |
+| Apakah semua kondisi ditampilkan? | Ya. Seluruh lima eksperimen ditampilkan tanpa menghilangkan data tertentu. |
+| Apa solusinya jika terjadi bias? | Menggunakan skala yang sama, tidak melakukan cherry-picking data, serta menampilkan error bar dan seluruh hasil eksperimen. |
 
 **Evaluasi grafik Anda sendiri dari Latihan 2:**
-- [ ] Semua bias check lulus
-- [ ] Ada yang perlu diperbaiki: ____
+- [✓] Semua bias check lulus
+- [✓] Tidak ditemukan bias visual yang signifikan
 
 ---
 
@@ -141,5 +160,5 @@ Evaluasi visualisasi berikut untuk bias (skenario dari contoh):
 
 > Mengapa tabel dan grafik keduanya diperlukan — tidak cukup salah satu saja? Pernahkah Anda membuat grafik yang (tanpa sengaja) menyesatkan?
 
-> ___________________________________________________
-> ___________________________________________________
+> Penyajian hasil penelitian tidak cukup hanya menggunakan tabel atau hanya menggunakan grafik. Tabel memberikan informasi numerik yang presisi sehingga memudahkan pembaca mengetahui nilai rata-rata, standar deviasi, dan jumlah eksperimen. Sebaliknya, grafik memudahkan pembaca melihat pola, tren, dan perbandingan antar-metode secara cepat. Oleh karena itu, keduanya saling melengkapi dalam menyampaikan hasil penelitian.
+> Dalam penelitian ini saya berusaha menghindari bias visual dengan menggunakan skala sumbu yang konsisten, tidak menghilangkan data yang tidak sesuai harapan, serta menyajikan seluruh hasil eksperimen beserta statistik deskriptifnya. Dengan demikian, visualisasi yang disajikan tidak hanya menarik secara visual, tetapi juga tetap akurat dan dapat dipertanggungjawabkan secara ilmiah.
