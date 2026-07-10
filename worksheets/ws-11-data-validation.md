@@ -69,7 +69,7 @@ Completeness:
   [✓] Semua skenario tercakup
   [✓] Jumlah run sesuai rencana
   [✓] Tidak ada file output hilang
-  Missing: ____ dari ____ data points
+  Missing: 0 dari 5 data points
 
 Format Consistency:
   [✓] Semua file format sama (CSV/JSON/...)
@@ -77,10 +77,14 @@ Format Consistency:
   [✓] Tipe data konsisten (numerik tetap numerik)
 
 Range & Logic:
-  [✓] Nilai dalam range masuk akal
-  [✓] Tidak ada waktu negatif
-  [✓] Metrik 0–100%, tidak di luar range
-  Anomali ditemukan: ____________________
+  [✓] Solar Radiation ≥ 0
+  [✓] Temperature valid
+  [✓] Humidity 0–100%
+  [✓] SOC 20–100%
+  [✓] Rule Efficiency 0–100%
+  [✓] Adaptive Efficiency 0–100%
+  [✓] Improvement
+  Anomali ditemukan: Tidak ada anomali kritis.
 
 Cross-Validation:
   [✓] Run identik → hasil mendekati
@@ -100,11 +104,10 @@ Verifikasi apakah semua data yang direncanakan sudah terkumpul.
 
 | Skenario | Run Direncanakan | Run Tercatat | Missing | Alasan |
 |----------|-----------------|-------------|---------|--------|
-| Baseline (Rule-based) | 5 | 5 | 0 | - |
-| Treatment (Holistic) | 5 | 5 | 0 | - |
+| Adaptive Energy Scheduler | 5 | 5 | 0 | Semua eksperimen berhasil dijalankan. |
 
 
-**Total expected:** 10 | **Total actual:** 10 | **Missing:** 0
+**Total expected:** 5 | **Total actual:** 5 | **Missing:** 0
 
 **Keputusan untuk data missing:**
 > Tidak ada missing. Semua run berhasil dicata
@@ -117,25 +120,32 @@ Periksa data Anda untuk anomali. Gunakan metode IQR atau z-score.
 
 **Dataset sampel (atau data Anda sendiri):**
 
-| Run | Accuracy (%) |
-|-----|-------------|
-| 1 | 74.2 |
-| 2 | 73.8 |
-| 3 | 75.1 |
-| 4 | 68.3 |
-| 5 | 74.5 |
+| Run | Rule Efficiency (%) | Adaptive Efficiency (%) | Average SOC (%) |
+|-----|-------------|--------------|-------------|
+| 1 | 40.50 | 42.24 | 51.05 |
+| 2 | 40.17 | 42.07 | 50.81 |
+| 3 | 40.40 | 42.19 | 50.94 |
+| 4 | 40.46 | 42.22 | 51.01 |
+| 5 | 40.49 | 42.24 | 51.05 |
 
 **Deteksi outlier:**
-- Q1 = 73.8 | Q3 = 74.5 | IQR = 0.7
-- Batas bawah (Q1 - 1.5×IQR) = 72.75
-- Batas atas (Q3 + 1.5×IQR) = 75.55
-- Outlier terdeteksi: Run 4 (68.3%)
+Rule Efficiency
+- Q1 = 40.40 | Q3 = 40.49 | IQR = 0.09
+- Batas bawah 40.40 - (1.5×0.09) = 40.655
+- Batas atas 40.49 + (1.5×0.09) = 40.625
+- Outlier terdeteksi: -
+
+Adaptive Efficiency
+- Q1 = 42.19 | Q3 = 42.24 | IQR = 0.05
+- Batas bawah 42.19 - (1.5×0.05) = 42.19
+- Batas atas 42.24 + (1.5×0.05) = 42.24
+- Outlier terdeteksi: -
 
 **Investigasi (untuk setiap outlier):**
 
 | Outlier | Nilai | Kemungkinan Penyebab | Keputusan |
 |---------|-------|---------------------|-----------|
-| Run 4 | *68.3 | Thermal throttling Ryzen 7 setelah 3 run berturut-turut (CPU panas → clock speed turun) | Re-run dengan cooling interval 10 menit antar run + catat di log sebagai anomali kontekstual |
+|Tidak ada | - | Variasi antar-run masih berada dalam rentang normal | Seluruh data dipertahankan |
 
 ---
 
@@ -143,9 +153,11 @@ Periksa data Anda untuk anomali. Gunakan metode IQR atau z-score.
 
 Buat laporan validasi ringkas untuk dataset eksperimen Anda.
 
-**1. Completeness:** 100% data terkumpul (10 dari 10 run)
+**1. Completeness:** 100% data berhasil dikumpulkan. Seluruh 5 eksperimen berhasil dijalankan sesuai execution plan dan menghasilkan seluruh file output yang dibutuhkan.
 **2. Format:** [✓] Konsisten / [ ] Ada inkonsistensi: -
-**3. Range check (anomali):** 1 (Run 4 karena thermal throttling)
+**3. Range check (anomali):** Seluruh variabel berada pada rentang yang valid. Solar Radiation ≥ 0, Temperature sesuai dataset NASA,  Humidity 0–100%, SOC 20–100%, Rule Efficiency 0–100%, Adaptive Efficiency 0–100%
+
+Tidak ditemukan nilai yang melampaui batas logis.
 **4. Logic check:** [✓]] Parameter sesuai plan / [ ] Ada ketidaksesuaian: ____
 
 **Kesimpulan:** [✓]] Data siap analisis / [ ] Perlu tindakan: Re-run Run 4 jika diperlukan untuk mengurangi outlier
@@ -156,5 +168,4 @@ Buat laporan validasi ringkas untuk dataset eksperimen Anda.
 
 > Apa perbedaan antara "data yang benar" dan "data yang dipercaya"? Mengapa proses validasi formal diperlukan meskipun data dikumpulkan secara otomatis?
 
-> Data yang benar adalah data yang teknisnya benar (sensor berfungsi, tidak ada error hardware, nilai masuk akal).
-> Data yang dipercaya" adalah data yang sudah melalui proses validasi formal sehingga kita bisa yakin bahwa data tersebut layak digunakan untuk membuat kesimpulan ilmiah.
+> Pada awal penelitian, saya menganggap bahwa data yang dihasilkan secara otomatis oleh program sudah pasti benar. Namun setelah mempelajari proses validasi data, saya memahami bahwa data yang benar belum tentu dapat dipercaya apabila belum melalui proses pemeriksaan kelengkapan, konsistensi, rentang nilai, serta kesesuaian dengan desain eksperimen. Melalui proses validasi pada penelitian ini, seluruh output diperiksa mulai dari jumlah data, struktur file, konsistensi format, hingga pemeriksaan rentang nilai setiap variabel. Hasil validasi menunjukkan bahwa dataset memiliki 8784 data, tidak terdapat missing value, tidak terdapat duplicate record, seluruh variabel berada pada rentang yang valid, serta lima kali eksperimen berhasil menghasilkan output yang konsisten. Oleh karena itu, data dinyatakan layak digunakan untuk analisis statistik dan evaluasi performa Rule-Based Scheduler maupun Adaptive Energy Scheduler.
