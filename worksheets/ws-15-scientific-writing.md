@@ -84,28 +84,28 @@ Metrik-X     ✗      ✗       ✓ ←     ✗        ✗
 ```
 PAPER STRUCTURE CHECKLIST
 
-Title   : ____________________
-Target  : [ ] Jurnal  [ ] Konferensi  [ ] Laporan
+Title   : Evaluasi Performa Desain Integrasi IoT Holistik dengan Adaptive Energy Scheduler Berbasis Panel Surya pada Sistem Hidroponik Cerdas di Kondisi Fluktuasi Energi Daerah Terpencil
+Target  : [✓] Jurnal  [ ] Konferensi  [ ] Laporan
 
 Section Check:
-  [ ] Abstract — masalah, metode, hasil utama, kontribusi (max 250 kata)
-  [ ] Introduction — konteks → gap → RQ → kontribusi → struktur paper
-  [ ] Related Work — concept-centric, gap positioning
-  [ ] Method — reproducible: desain, variabel, metrik, setup, prosedur
-  [ ] Results — tabel + grafik + observasi (tanpa interpretasi)
-  [ ] Discussion — interpretasi, perbandingan, implikasi, limitation
-  [ ] Conclusion — jawaban RQ, kontribusi, future work
+  [✓] Abstract — masalah, metode, hasil utama, kontribusi (max 250 kata)
+  [✓] Introduction — konteks → gap → RQ → kontribusi → struktur paper
+  [✓] Related Work — concept-centric, gap positioning
+  [✓] Method — reproducible: desain, variabel, metrik, setup, prosedur
+  [✓] Results — tabel + grafik + observasi (tanpa interpretasi)
+  [✓] Discussion — interpretasi, perbandingan, implikasi, limitation
+  [✓] Conclusion — jawaban RQ, kontribusi, future work
 
 Consistency Matrix:
-  [ ] RQ di Introduction = RQ di Method = RQ di Conclusion
-  [ ] Variabel di Method = variabel di Results
-  [ ] Klaim di Discussion didukung data di Results
-  [ ] Limitasi di Discussion di-address di Conclusion/Future Work
+  [✓] RQ di Introduction = RQ di Method = RQ di Conclusion
+  [✓] Variabel di Method = variabel di Results
+  [✓] Klaim di Discussion didukung data di Results
+  [✓] Limitasi di Discussion di-address di Conclusion/Future Work
 
 Writing Quality:
-  [ ] Clarity — mudah dipahami tanpa re-read
-  [ ] Precision — tidak ada istilah ambigu
-  [ ] Conciseness — tidak ada kalimat redundan
+  [✓] Clarity — mudah dipahami tanpa re-read
+  [✓] Precision — tidak ada istilah ambigu
+  [✓] Conciseness — tidak ada kalimat redundan
 ```
 
 ---
@@ -116,13 +116,13 @@ Buat outline paper untuk riset Anda menggunakan struktur IMRAD.
 
 | Section | Konten Utama (2-3 kalimat) | Target Kata |
 |---------|---------------------------|------------|
-| Abstract | *Contoh: Sistem rekomendasi memiliki akurasi tinggi tapi satisfaction rendah. Studi ini menguji CF+context signal. Hasil: satisfaction naik 38% tanpa penurunan RMSE signifikan.* | 200-250 |
-| Introduction | *Contoh: Konteks: gap antara akurasi dan kepuasan pengguna. Gap: tidak ada studi yang mengkombinasikan CF+context. RQ: apakah CF+context meningkatkan satisfaction?* | 500-700 |
-| Related Work | | 700-1000 |
-| Method | | 800-1200 |
-| Results | | 500-800 |
-| Discussion | | 600-900 |
-| Conclusion | | 200-400 |
+| Abstract | Menjelaskan masalah ketergantungan energi pada sistem hidroponik IoT, metode Adaptive Energy Scheduler berbasis panel surya menggunakan dataset NASA POWER, hasil eksperimen menunjukkan Adaptive Scheduler memperoleh efisiensi rata-rata 42.19% dibanding Rule-Based 40.40%, serta kontribusi penelitian terhadap pengelolaan energi hidroponik. | 200–250 |
+| Introduction | Menjelaskan pentingnya hidroponik cerdas, tantangan fluktuasi energi di daerah terpencil, research gap pada sistem rule-based, research question, hipotesis, serta kontribusi Adaptive Energy Scheduler. | 500-700 |
+| Related Work | Mengulas penelitian mengenai smart farming, IoT, hidroponik, panel surya, battery management, dan adaptive energy management serta mengidentifikasi research gap yang belum terjawab. | 700-1000 |
+| Method | Menjelaskan Design Science Research, dataset NASA POWER, preprocessing, PV Model, Energy Demand Model, Battery Model, Rule-Based Scheduler, Adaptive Scheduler, setup eksperimen, metrik evaluasi, serta teknik analisis data.| 800-1200 |
+| Results | Menyajikan hasil eksperimen berupa tabel efisiensi, statistik deskriptif, grafik perbandingan Rule-Based dan Adaptive Scheduler, serta hasil lima kali eksperimen. | 500-800 |
+| Discussion | Menginterpretasikan peningkatan efisiensi Adaptive Scheduler, membahas hubungan dengan penelitian terdahulu, menjelaskan keterbatasan penelitian, serta implikasi praktis terhadap sistem hidroponik cerdas. | 600-900 |
+| Conclusion | Menyimpulkan bahwa Adaptive Scheduler memberikan peningkatan efisiensi dibanding Rule-Based Scheduler pada konfigurasi yang digunakan serta memberikan rekomendasi penelitian lanjutan. | 200-400 |
 
 ---
 
@@ -132,22 +132,26 @@ Buat consistency matrix untuk memverifikasi internal consistency paper Anda.
 
 |  | Intro | Method | Result | Discussion | Conclusion |
 |--|-------|--------|--------|-----------|-----------|
-| *Contoh: RQ1* | *✓* | *✓* | *✓* | *✓* | *✓* |
-| *Contoh: Metrik-X* | *✗ ←* | *✗ ←* | *✓* | *✗ ←* | *✗ ←* |
-| RQ1 | | | | | |
-| RQ2 | | | | | |
-| Metrik utama | | | | | |
-| Variabel IV | | | | | |
-| Variabel DV | | | | | |
-| Klaim/kontribusi | | | | | |
+| RQ1 | ✓ | ✓ | ✓ | ✓ | ✓ |
+| Hipotesis | ✓ | ✓ | ✓ | ✓ | ✓ |
+| Metrik Efisiensi Energi | ✓ | ✓ | ✓ | ✓ | ✓ |
+| Variabel IV (Adaptive vs Rule-Based) | ✓ | ✓ | ✓ | ✓ | ✓ |
+| Variabel DV (Efisiensi, SOC) | ✓ | ✓ | ✓ | ✓ | ✓ |
+| Dataset NASA POWER | ✓ | ✓ | ✓ | ✓ | ✓ |
+| PV Model| ✗ | ✓ | ✓ | ✓ | ✓ |
+| Battery Model | ✗ | ✓ | ✓ | ✓ | ✓ |
+| Adaptive Scheduler | ✓ | ✓ | ✓ | ✓ | ✓ |
+| Kontribusi Penelitian | ✓ | ✓ | ✓ | ✓ | ✓ |
 
 **Isi setiap sel:** ✓ (ada & konsisten), ✗ (missing), ~ (ada tapi inkonsisten)
 
 **Inkonsistensi yang ditemukan:**
-> ___________________________________________________
+> Tidak ditemukan inkonsistensi utama. Seluruh komponen penelitian telah muncul secara konsisten mulai dari Introduction hingga Conclusion. Beberapa komponen teknis seperti PV Model dan Battery Model tidak dijelaskan secara rinci pada Introduction karena memang merupakan bagian metodologi penelitian.
 
 **Tindakan perbaikan:**
-> ___________________________________________________
+> Memastikan semua metrik evaluasi yang digunakan pada Results telah dijelaskan pada bagian Method.
+> Menambahkan pembahasan mengenai keterbatasan Adaptive Scheduler pada bagian Discussion.
+> Menyelaraskan kembali nilai hasil eksperimen yang ditampilkan pada Abstract, Results, Discussion, dan Conclusion agar menggunakan angka yang sama.
 
 ---
 
@@ -156,16 +160,16 @@ Buat consistency matrix untuk memverifikasi internal consistency paper Anda.
 Ambil satu paragraf dari tulisan Anda (atau tulis paragraf baru) dan evaluasi kualitasnya.
 
 **Paragraf asli:**
-> (tempel paragraf Anda di sini)
+> Penelitian ini mengembangkan sistem Adaptive Energy Scheduler berbasis panel surya untuk meningkatkan efisiensi penggunaan energi pada sistem hidroponik cerdas. Sistem menggunakan dataset NASA POWER sebagai sumber data intensitas radiasi matahari dan kondisi lingkungan untuk melakukan simulasi pengelolaan energi.
 
 | Kriteria | Evaluasi | Perbaikan |
 |----------|---------|-----------|
-| Clarity | *Contoh: kalimat ke-3 ambigu — "performa" bisa berarti accuracy atau speed* | *Ubah menjadi: "accuracy meningkat..."* |
-| Precision | | |
-| Conciseness | | |
+| Clarity | Sudah jelas tetapi belum menyebutkan hasil penelitian. | Tambahkan hasil eksperimen secara eksplisit. |
+| Precision | Belum menyebutkan nilai peningkatan efisiensi secara spesifik. | Tambahkan nilai efisiensi Rule-Based dan Adaptive Scheduler. |
+| Conciseness | Sudah cukup ringkas. | Tidak diperlukan pengurangan kalimat. |
 
 **Paragraf setelah perbaikan:**
-> (tulis paragraf yang sudah diperbaiki)
+> Penelitian ini mengembangkan Adaptive Energy Scheduler berbasis panel surya untuk meningkatkan efisiensi penggunaan energi pada sistem hidroponik cerdas. Simulasi menggunakan dataset NASA POWER tahun 2024 yang berisi 8784 data radiasi matahari dan kondisi lingkungan. Hasil eksperimen menunjukkan bahwa Adaptive Energy Scheduler memperoleh rata-rata efisiensi sebesar 42.19%, lebih tinggi dibandingkan Rule-Based Scheduler sebesar 40.40%, sehingga menghasilkan peningkatan efisiensi rata-rata sebesar 1.79% pada konfigurasi simulasi yang digunakan.
 
 ---
 
@@ -173,5 +177,5 @@ Ambil satu paragraf dari tulisan Anda (atau tulis paragraf baru) dan evaluasi ku
 
 > Apa perbedaan antara menulis "tentang" riset dan menulis sebagai "argumen" riset? Bagaimana urutan penulisan (Method → Discussion → Introduction) mengubah kualitas tulisan?
 
-> ___________________________________________________
-> ___________________________________________________
+> Menulis tentang penelitian berarti hanya menjelaskan apa yang dilakukan selama proses penelitian, sedangkan menulis sebagai argumen ilmiah berarti menyusun rangkaian penjelasan yang logis untuk meyakinkan pembaca bahwa penelitian tersebut memang diperlukan, dilakukan dengan metode yang tepat, menghasilkan temuan yang dapat dipercaya, dan memberikan kontribusi ilmiah. Dalam penulisan ilmiah, setiap bagian harus saling terhubung mulai dari masalah penelitian, research gap, pertanyaan penelitian, metode, hasil, pembahasan, hingga kesimpulan.
+> Saya juga memahami bahwa urutan penulisan Method → Results → Discussion → Introduction → Abstract → Conclusion lebih efektif dibandingkan menulis secara berurutan dari pendahuluan. Dengan menyelesaikan bagian metode dan hasil terlebih dahulu, seluruh data eksperimen telah tersedia sehingga pembahasan dapat dibuat berdasarkan bukti yang nyata. Pendahuluan kemudian dapat disesuaikan dengan hasil penelitian yang diperoleh, sedangkan abstrak dan kesimpulan menjadi ringkasan akhir yang konsisten dengan keseluruhan isi artikel. Pendekatan ini membantu menghasilkan tulisan yang lebih sistematis, konsisten, dan mudah dipahami oleh pembaca maupun reviewer.
