@@ -80,32 +80,52 @@ ANALYSIS & INTERPRETATION
 1. Statistik Deskriptif:
    | Skenario | Mean | Std | Median | Min | Max | n |
    |----------|------|-----|--------|-----|-----|---|
-   |          |      |     |        |     |     |   |
+   | Rule-Based Scheduler | 40.40 | 0.14 | 40.46 | 40.17 | 40.50 | 5 |
+   | Adaptive Energy Scheduler | 42.19 | 0.07 | 42.22 | 42.07 | 42.24 | 5 |
 
-2. Uji Hipotesis:
-   Uji yang digunakan  : ____________________
-   Justifikasi          : ____________________
-   Hasil: p = ____, effect size (d/r/η²) = ____
-   CI 95%               : [____, ____]
+2. Ringkasan Statistik
+   | Parameter | Nilai |
+   |-----------|-------|
+   | Rule Mean | 40.40 % |
+   | Adaptive Mean | 42.19 % |
+   | Mean Improvement | 1.79 % |
+   | Rule Std | 0.14 |
+   | Adaptive Std | 0.07 |
+   | Dataset | NASA POWER 2024 |
+   | Jumlah Data | 8784 |
 
-3. Keputusan:
+3. Uji Hipotesis: H0 : Adaptive Energy Scheduler tidak memberikan peningkatan efisiensi dibandingkan Rule-Based Scheduler. H1 : Adaptive Energy Scheduler memberikan peningkatan efisiensi dibandingkan Rule-Based Scheduler.
+   Uji yang digunakan  : Paired t-test (direncanakan)
+   Justifikasi          : Karena setiap run Rule-Based dibandingkan langsung dengan run Adaptive pada kondisi eksperimen yang sama sehingga data bersifat berpasangan (paired).
+   Hasil
+   | Parameter | Nilai |
+   |-----------|-------|
+   | p-value | Belum dihitung |
+   | Effect Size | Belum dihitung |
+   | Confidence Interval | Belum dihitung |
+
+4. Keputusan:
    [ ] H₀ ditolak → H₁ diterima
    [ ] H₀ tidak ditolak
+   ☑ Belum dapat diputuskan karena uji inferensial belum dilakukan.
 
-4. Interpretasi:
-   Hubungan ke RQ       : ____________________
-   Practical significance: ____________________
-   Perbandingan literatur: ____________________
+5. Interpretasi:
+   Hubungan ke RQ       : Hasil eksperimen menunjukkan bahwa Adaptive Energy Scheduler memiliki rata-rata efisiensi sebesar 42.19%, sedangkan Rule-Based Scheduler memperoleh rata-rata 40.40%. Selisih rata-rata sebesar 1.79% mengindikasikan adanya peningkatan performa pada metode adaptif dibandingkan metode berbasis aturan. Namun demikian, berdasarkan data yang tersedia saat ini, peningkatan tersebut baru dapat disimpulkan secara deskriptif. Untuk menyatakan apakah peningkatan tersebut signifikan secara statistik masih diperlukan pengujian inferensial.
+   Practical significance: Secara praktis, peningkatan efisiensi sebesar 1.79% menunjukkan bahwa pendekatan adaptif mampu memanfaatkan energi panel surya sedikit lebih baik dibandingkan pendekatan Rule-Based pada konfigurasi simulasi yang digunakan. Walaupun peningkatannya relatif kecil, hasil ini menunjukkan bahwa konsep penjadwalan adaptif memiliki potensi untuk dikembangkan lebih lanjut melalui penyempurnaan algoritma pengambilan keputusan dan pengendalian beban.
+   Perbandingan literatur: Hasil penelitian ini sejalan dengan berbagai penelitian mengenai Energy Management System yang menunjukkan bahwa metode adaptif cenderung memberikan efisiensi lebih baik dibandingkan metode berbasis aturan tetap. Akan tetapi, peningkatan efisiensi sangat dipengaruhi oleh model kontrol, karakteristik beban, kapasitas baterai, dan kondisi lingkungan yang digunakan dalam simulasi.
 
-5. Limitation:
+6. Limitation:
    | Jenis | Ancaman | Dampak | Mitigasi |
    |-------|---------|--------|----------|
-   |       |         |        |          |
+   | Internal Validity | Scheduler masih sederhana | Peningkatan efisiensi belum maksimal | Mengembangkan algoritma adaptif yang lebih kompleks |
+   | External Validity | Dataset hanya berasal dari satu lokasi NASA POWER| Generalisasi ke lokasi lain terbatas | Menguji dataset dari beberapa lokasi geografis |
+   | Statistical | Jumlah eksperimen hanya 5 run | Analisis inferensial masih terbatas | Menambah jumlah run pada penelitian lanjutan |
+   | Construct Validity | Hanya menggunakan efisiensi energi sebagai indikator utama | Belum mengevaluasi aspek lain seperti waktu respon atau stabilitas | Menambahkan metrik evaluasi lain |
 
 6. Failure Analysis (jika H₀ tidak ditolak):
-   Penyebab potensial  : ____________________
-   Boundary condition   : ____________________
-   Insight              : ____________________
+   Penyebab potensial  : Model Adaptive Scheduler masih menggunakan pendekatan berbasis skor sederhana. Beban listrik belum benar-benar dikendalikan secara dinamis. Variasi antar-run hanya menggunakan perubahan parameter kecil sehingga karakteristik eksperimen masih relatif seragam.
+   Boundary condition   : Adaptive Scheduler memberikan peningkatan pada konfigurasi simulasi yang digunakan, tetapi belum menunjukkan peningkatan yang besar ketika kondisi sistem relatif stabil dan variasi lingkungan terbatas.
+   Insight              : Peningkatan efisiensi yang kecil menunjukkan bahwa Adaptive Scheduler masih memiliki ruang pengembangan, misalnya dengan: optimasi bobot keputusan, prediksi energi panel surya, prediksi beban listrik, penerapan logika fuzzy, reinforcement learning, atau Model Predictive Control (MPC).
 ```
 
 ---
@@ -116,13 +136,13 @@ Tentukan uji statistik yang tepat untuk eksperimen Anda.
 
 | Pertanyaan | Jawaban |
 |-----------|---------|
-| Berapa grup yang dibandingkan? | *Contoh: 3 (BERT, LSTM, SVM)* |
-| Apakah data berpasangan (paired)? | |
-| Apakah distribusi normal? (uji normalitas) | |
-| **Uji yang dipilih:** | |
-| **Justifikasi:** | |
+| Berapa grup yang dibandingkan? | 2 (Rule-Based dan Adaptive Scheduler) |
+| Apakah data berpasangan (paired)? | Ya |
+| Apakah distribusi normal? (uji normalitas) | Belum diuji |
+| **Uji yang dipilih:** | Paired t-test (apabila data normal) atau Wilcoxon Signed-Rank Test (apabila tidak normal) |
+| **Justifikasi:** | Data berasal dari lima run pada kondisi eksperimen yang sama sehingga bersifat berpasangan. |
 
-**Effect size yang akan dilaporkan:** [ ] Cohen's d / [ ] Eta-squared / [ ] Lainnya: ____
+**Effect size yang akan dilaporkan:** [✓] Cohen's d / [ ] Eta-squared / [ ] Lainnya: ____
 
 ---
 
@@ -133,18 +153,18 @@ Gunakan data berikut (atau data riil Anda) untuk berlatih interpretasi.
 **Data:**
 | Model | Accuracy (mean ± std) | n |
 |-------|----------------------|---|
-| A | 89.2 ± 1.5 | 10 |
-| B | 87.8 ± 2.1 | 10 |
+| Rule-Based Scheduler | 40.40 ± 0.14 % | 5 |
+| Adaptive Energy Scheduler | 42.19 ± 0.07 % | 5 |
 
-p = 0.045, Cohen's d = 0.74, CI 95% = [0.03, 2.77]
+Catatan: Uji statistik inferensial (misalnya paired t-test atau Wilcoxon signed-rank test) belum dilakukan pada penelitian ini. Oleh karena itu, bagian p-value, Cohen's d, dan Confidence Interval belum dapat dilaporkan sebagai hasil nyata.
 
 | Aspek | Interpretasi |
-|-------|-------------|
-| Signifikansi statistik | *Contoh: p < 0.05 → signifikan pada α=0.05* |
-| Effect size | *Contoh: d=0.74 → medium-to-large effect* |
-| Practical significance | |
-| Hubungan ke RQ | |
-| Perbandingan literatur | |
+|-------|--------------|
+| Signifikansi Statistik | Belum dihitung sehingga belum dapat disimpulkan |
+| Effect Size | Belum dihitung |
+| Practical Significance | Adaptive Scheduler memberikan peningkatan efisiensi rata-rata sebesar 1.79%. |
+| Hubungan dengan RQ | Adaptive Scheduler menunjukkan performa lebih baik dibanding Rule-Based Scheduler. |
+| Perbandingan Literatur | Sejalan dengan penelitian EMS yang menunjukkan metode adaptif cenderung lebih efisien. |
 
 ---
 
@@ -156,18 +176,18 @@ Latih kemampuan failure analysis: hipotesis TIDAK didukung. Apa yang bisa dipela
 
 | Pertanyaan | Jawaban |
 |-----------|---------|
-| Apakah ini "gagal"? | *Contoh: Bukan gagal total — hipotesis tidak terdukung adalah temuan yang valid dan bisa menjadi kontribusi.* |
-| Kemungkinan penyebab? | *Contoh: Metode baru menambah kompleksitas komputasi (+40% waktu) tanpa peningkatan F1 yang cukup — overhead tidak sebanding.* |
-| Boundary condition? | *Contoh: Metode ini hanya efektif ketika data ≥ 10.000 record; di dataset kecil (<1.000), baseline lebih stabil.* |
-| Insight yang bisa diambil? | *Contoh: Ada trade-off ukuran data vs kompleksitas — rekomendasikan hybrid approach yang adaptif berdasarkan ukuran dataset.* |
-| Apakah layak dilaporkan? Mengapa? | *Contoh: Ya — negative result + boundary condition analysis adalah kontribusi riset yang diakui komunitas (ex: ACL, SIGIR). Mencegah riset duplikasi yang berulang.* |
+| Apakah ini "gagal"? | Tidak. Adaptive Scheduler tetap memberikan peningkatan meskipun belum besar. |
+| Kemungkinan penyebab? | Algoritma adaptif masih sederhana dan belum mengubah konsumsi beban secara dinamis. |
+| Boundary condition? | Efektivitas terbatas pada konfigurasi simulasi dengan variasi parameter kecil. |
+| Insight yang bisa diambil? | Adaptive Scheduler perlu dikembangkan agar mampu mengontrol beban secara lebih adaptif terhadap perubahan lingkungan. |
+| Apakah layak dilaporkan? Mengapa? | Ya. Hasil ini menunjukkan batas kemampuan metode yang digunakan dan memberikan arah pengembangan penelitian selanjutnya. |
 
 **Limitation terkait:**
 | Jenis | Ancaman | Dampak |
 |-------|---------|--------|
-| *Contoh: Statistical* | *Contoh: Hanya 5 run per skenario* | *Power test rendah* |
-| | | |
-| | | |
+| Statistical | Jumlah run hanya 5 | Kekuatan uji statistik masih rendah |
+| Algorithmic | Adaptive Scheduler sederhana | Peningkatan efisiensi belum optimal |
+| Dataset | Satu lokasi NASA POWER | Generalisasi terbatas |
 
 ---
 
@@ -175,5 +195,5 @@ Latih kemampuan failure analysis: hipotesis TIDAK didukung. Apa yang bisa dipela
 
 > Apakah "failure" dalam riset benar-benar gagal, atau justru kontribusi? Bagaimana failure analysis mengubah cara Anda melihat hasil negatif?
 
-> ___________________________________________________
-> ___________________________________________________
+> Melalui proses analisis ini saya memahami bahwa hasil penelitian tidak hanya dinilai dari besar kecilnya peningkatan performa, tetapi juga dari bagaimana hasil tersebut dianalisis dan dijelaskan. Peningkatan efisiensi sebesar 1.79% memang belum besar, namun tetap memberikan informasi bahwa pendekatan adaptif memiliki potensi untuk meningkatkan pengelolaan energi dibandingkan metode Rule-Based pada konfigurasi yang digunakan.
+> Selain itu, saya menyadari bahwa failure analysis bukan berarti menunjukkan kegagalan penelitian, melainkan membantu mengidentifikasi batas kemampuan metode yang dikembangkan. Dengan mengetahui penyebab peningkatan yang masih terbatas, penelitian lanjutan dapat difokuskan pada penyempurnaan algoritma, penambahan skenario eksperimen, serta evaluasi menggunakan lebih banyak dataset sehingga kontribusi ilmiahnya menjadi lebih kuat.
