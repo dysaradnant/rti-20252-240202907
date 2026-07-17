@@ -1,30 +1,95 @@
-# 06-output
+# 06 - Output
 
-Hasil olahan data & visualisasi — **Tahap 4** (lihat [../09-docs/tahap-4-analisis-data.md](../09-docs/tahap-4-analisis-data.md)).
+Folder ini berisi seluruh hasil simulasi, analisis, dan visualisasi yang dihasilkan dari implementasi **Adaptive Energy Scheduler** berbasis panel surya pada sistem hidroponik cerdas.
 
-Dihasilkan oleh `05-kode/analysis/run_all.py` dari data mentah `04-data/` (matrix 400 run, 40 replikasi).
+Seluruh file pada folder ini dihasilkan secara otomatis setelah menjalankan tahapan eksperimen yang terdapat pada folder `05-kode`.
 
-## tables/
+---
 
-| File | Isi |
-|---|---|
-| `descriptive_stats.csv` | Statistik deskriptif (latensi avg/p90/p95/max, RPS, failed/checks rate) per (cache_mode, traffic_variant), mean±std atas 40 replikasi |
-| `descriptive_stats_mixed_scenarios.csv` | Breakdown latensi legitimate vs attack untuk traffic_variant `mixed-unique`/`mixed-pool` |
-| `dperf.csv` | $D_{perf}$ = (T_hybrid − T_none) / T_none × 100% untuk traffic legitimate (baseline & dalam mixed) |
-| `resource_usage.csv` | CPU% & memori (MiB) mean/max per (cache_mode, traffic_variant, container) |
-| `mitigation_effectiveness.csv` | Metrik efektivitas mitigasi dari delta `/metrics` gateway (db queries, cache hit ratio, rate-limit blocked, auth outcome) |
-| `db_query_reduction.csv` | Penurunan total query Postgres hybrid vs none per traffic_variant |
+# Struktur Folder
 
-## figures/
+```text
+06-output/
+│
+├── csv/
+├── excel/
+├── graph/
+└── README.md
+```
 
-| File | Isi |
-|---|---|
-| `fig_latency_p95.png` | Bar chart `http_req_duration` p95 per traffic_variant: none vs hybrid (mean±std, log scale) |
-| `fig_dperf.png` | Bar chart $D_{perf}$ (avg & p95) untuk 3 perbandingan traffic legitimate |
-| `fig_db_queries_reduction.png` | Bar chart total query Postgres per run: none vs hybrid (log scale) |
-| `fig_postgres_cpu.png` | Bar chart CPU% rata-rata container `gateway-postgres-1`: none vs hybrid |
-| `fig_resource_timeseries.png` | Time-series CPU% `gateway-postgres-1` selama `mixed-pool` rep1: none vs hybrid |
+---
 
-## Acuan
+# csv/
 
-[../09-docs/tahap-4-analisis-data.md](../09-docs/tahap-4-analisis-data.md)
+Berisi hasil simulasi dalam format **CSV**.
+
+| File | Deskripsi |
+|------|-----------|
+| experiment_part1.csv | Hasil preprocessing dataset dan perhitungan PV Model. |
+| experiment_part2.csv | Hasil simulasi Battery Model dan Energy Demand Model. |
+| experiment_part3.csv | Hasil simulasi Adaptive Energy Scheduler. |
+| experiment_final_run_1.csv | Hasil simulasi run ke-1. |
+| experiment_final_run_2.csv | Hasil simulasi run ke-2. |
+| experiment_final_run_3.csv | Hasil simulasi run ke-3. |
+| experiment_final_run_4.csv | Hasil simulasi run ke-4. |
+| experiment_final_run_5.csv | Hasil simulasi run ke-5. |
+| summary_final.csv | Ringkasan hasil seluruh eksperimen. |
+
+---
+
+# excel/
+
+Berisi hasil simulasi dalam format Microsoft Excel.
+
+| File | Deskripsi |
+|------|-----------|
+| experiment_part1.xlsx | Hasil preprocessing dan PV Model. |
+| experiment_part2.xlsx | Hasil Battery Model dan Energy Demand Model. |
+| experiment_part3.xlsx | Hasil Adaptive Energy Scheduler. |
+| summary_final.xlsx | Ringkasan hasil eksperimen dalam format Excel. |
+
+---
+
+# graph/
+
+Berisi visualisasi hasil penelitian.
+
+| File | Deskripsi |
+|------|-----------|
+| comparison_efficiency.png | Perbandingan efisiensi Rule-Based Scheduler dan Adaptive Energy Scheduler pada setiap simulasi. |
+
+---
+
+# Ringkasan Hasil
+
+Berdasarkan lima kali simulasi, diperoleh hasil sebagai berikut.
+
+| Parameter | Nilai |
+|-----------|-------:|
+| Mean Rule Efficiency | 39.86 % |
+| Mean Adaptive Efficiency | 41.91 % |
+| Mean Improvement | 2.05 % |
+| Average SOC | 50.78 % |
+
+Hasil tersebut menunjukkan bahwa **Adaptive Energy Scheduler** memberikan peningkatan efisiensi dibandingkan metode Rule-Based Scheduler pada skenario simulasi yang digunakan.
+
+---
+
+# Cara Menghasilkan Output
+
+Seluruh file pada folder ini dihasilkan secara otomatis dengan menjalankan tahapan eksperimen berikut.
+
+```bash
+python experiment_final_part1.py
+python experiment_final_part2.py
+python experiment_final_part3.py
+python experiment_final_part4.py
+```
+
+---
+
+# Acuan
+
+- `../04-data/` — Dataset dan data hasil preprocessing.
+- `../05-kode/` — Source code implementasi penelitian.
+- `../09-docs/` — Dokumentasi metodologi dan analisis penelitian.
