@@ -119,19 +119,19 @@ Format:
 04-data/
 │
 ├── raw/
-│   └── nasa_power_2024.csv
+│   └── POWER_Point_Hourly_20240101_20241231_007d55S_109d67E_LST.csv
 │
 ├── preprocessing/
-│   └── dataset_clean.csv
+│   └── experiment_part1.csv
 │
 ├── pv/
-│   └── pv_output.csv
+│   └── experiment_part1.csv
 │
 ├── battery/
-│   └── battery_output.csv
+│   └── experiment_part2.csv.csv
 │
 ├── load/
-│   └── load_output.csv
+│   └── experiment_part2.csv.csv
 │
 ├── metadata/
 │   └── simulation_metadata.csv
