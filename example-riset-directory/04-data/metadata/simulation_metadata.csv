@@ -1,1 +1,13 @@
-
+Parameter,Value
+Experiment Name,Adaptive Energy Scheduler
+Dataset,NASA POWER
+Rows,8784
+Period,2024-01-01 sampai 2024-12-31
+Python Version,3.13.9
+Operating System,Windows
+Execution Time,2026-07-17 13:48:41
+PV Model,Enabled
+Battery Model,Enabled
+Energy Demand Model,Enabled
+Scheduler,Adaptive Energy Scheduler
+Output File,summary_final.csv
