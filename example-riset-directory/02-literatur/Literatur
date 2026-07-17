@@ -1,0 +1,314 @@
+# 02-literatur
+
+Dokumen pada folder ini berisi kumpulan referensi ilmiah yang digunakan sebagai dasar penyusunan proposal, tinjauan pustaka, serta landasan teori penelitian berjudul:
+
+> **Evaluasi Performa Desain Integrasi IoT Holistik dengan Adaptive Energy Scheduler Berbasis Panel Surya pada Sistem Hidroponik Cerdas di Kondisi Fluktuasi Energi Daerah Terpencil**
+
+Seluruh referensi diperoleh melalui Google Scholar, IEEE Xplore, ScienceDirect, SpringerLink, MDPI, Elsevier, GARUDA, NASA POWER Documentation, serta sumber ilmiah lain yang relevan.
+
+---
+
+# Ringkasan Studi Literatur
+
+Berdasarkan hasil studi literatur, penerapan **Internet of Things (IoT)** pada sistem hidroponik telah berkembang pesat melalui integrasi sensor, aktuator, mikrokontroler, dan komunikasi nirkabel. Sistem tersebut mampu melakukan monitoring suhu, kelembapan, pH, nutrisi, dan kondisi lingkungan tanaman secara real-time sehingga meningkatkan efisiensi pengelolaan budidaya.
+
+Perkembangan berikutnya menunjukkan bahwa beberapa penelitian mulai memanfaatkan **panel surya (Photovoltaic/PV)** sebagai sumber energi utama untuk mendukung operasional sistem hidroponik, terutama pada wilayah yang memiliki keterbatasan akses listrik. Penggunaan energi terbarukan mampu meningkatkan kemandirian sistem sekaligus mengurangi konsumsi energi konvensional.
+
+Namun demikian, sebagian besar penelitian masih menggunakan mekanisme **Rule-Based Control**, sehingga pengelolaan energi belum mampu menyesuaikan perubahan intensitas radiasi matahari, kondisi baterai, maupun kebutuhan beban secara dinamis. Informasi **State of Charge (SOC)** umumnya hanya digunakan sebagai parameter monitoring, bukan sebagai dasar pengambilan keputusan dalam distribusi energi.
+
+Penelitian ini mengembangkan **Adaptive Energy Scheduler** dengan mengintegrasikan **PV Model**, **Battery Model**, **Energy Demand Model**, serta **dataset NASA POWER** sebagai dasar simulasi produksi energi panel surya. Pendekatan tersebut diharapkan mampu meningkatkan efisiensi penggunaan energi pada sistem hidroponik cerdas dibandingkan pendekatan Rule-Based Scheduler.
+
+---
+
+# Research Gap
+
+Penelitian terdahulu telah berhasil mengembangkan sistem hidroponik berbasis IoT yang mampu melakukan monitoring lingkungan tanaman secara otomatis menggunakan berbagai sensor. Beberapa penelitian juga telah mengintegrasikan panel surya dan baterai sebagai sumber energi alternatif.
+
+Meskipun demikian, sebagian besar penelitian masih berfokus pada otomatisasi monitoring dan kontrol perangkat tanpa mengoptimalkan pengelolaan energi secara adaptif. Penggunaan baterai umumnya hanya sebagai media penyimpanan energi, sedangkan mekanisme penjadwalan penggunaan energi masih menggunakan aturan tetap (*Rule-Based Scheduler*).
+
+Selain itu, masih sangat sedikit penelitian yang memanfaatkan **dataset historis NASA POWER** sebagai dasar simulasi produksi energi panel surya untuk mengevaluasi strategi pengelolaan energi pada sistem hidroponik.
+
+Berdasarkan kondisi tersebut, penelitian ini menawarkan pendekatan yang berbeda melalui integrasi:
+
+- PV Model
+- Battery Model
+- Energy Demand Model
+- Adaptive Energy Scheduler
+- Dataset NASA POWER
+
+dalam satu sistem hidroponik cerdas sehingga diharapkan mampu meningkatkan efisiensi penggunaan energi secara lebih adaptif.
+
+---
+
+# Topik Literatur
+
+## 1. Smart Agriculture
+
+Kajian mengenai konsep Smart Agriculture sebagai penerapan teknologi digital untuk meningkatkan produktivitas dan efisiensi sektor pertanian.
+
+Materi yang dipelajari:
+
+- Smart Agriculture
+- Precision Agriculture
+- Sustainable Agriculture
+
+---
+
+## 2. Smart Hydroponic
+
+Kajian mengenai penerapan teknologi pada sistem hidroponik modern.
+
+Topik meliputi:
+
+- Smart Hydroponic
+- Nutrient Film Technique (NFT)
+- Deep Flow Technique (DFT)
+- Monitoring Lingkungan
+- Otomatisasi Hidroponik
+
+---
+
+## 3. Internet of Things (IoT)
+
+Literatur mengenai penerapan Internet of Things pada sistem hidroponik.
+
+Topik yang dipelajari:
+
+- ESP32
+- Arduino
+- Sensor
+- Aktuator
+- Monitoring Real-Time
+- Wireless Communication
+
+---
+
+## 4. Renewable Energy
+
+Kajian mengenai energi terbarukan sebagai sumber energi utama sistem hidroponik.
+
+Materi meliputi:
+
+- Solar Energy
+- Photovoltaic (PV)
+- Solar Panel
+- Renewable Energy System
+
+---
+
+## 5. Battery Management System
+
+Literatur mengenai penyimpanan dan pengelolaan energi menggunakan baterai.
+
+Topik meliputi:
+
+- Battery
+- State of Charge (SOC)
+- Charging
+- Discharging
+- Battery Efficiency
+
+---
+
+## 6. Energy Management System
+
+Kajian mengenai strategi pengelolaan energi.
+
+Materi meliputi:
+
+- Energy Management
+- Energy Optimization
+- Load Management
+- Power Distribution
+- Demand Management
+
+---
+
+## 7. Adaptive Energy Scheduler
+
+Kajian utama penelitian.
+
+Topik yang dipelajari:
+
+- Adaptive Scheduling
+- Rule-Based Scheduler
+- Energy Scheduling
+- Decision Making
+- Adaptive Control
+
+---
+
+## 8. NASA POWER Dataset
+
+Kajian mengenai dataset yang digunakan pada penelitian.
+
+Topik meliputi:
+
+- Solar Radiation
+- Air Temperature
+- Relative Humidity
+- Wind Speed
+- Hourly Weather Data
+- Historical Climate Dataset
+
+---
+
+## 9. PV Model
+
+Kajian mengenai pemodelan produksi energi panel surya.
+
+Materi meliputi:
+
+- Solar Irradiance
+- PV Power
+- PV Energy
+- Conversion Efficiency
+
+---
+
+## 10. Evaluasi Sistem
+
+Kajian mengenai metode evaluasi performa Adaptive Energy Scheduler.
+
+Metrik yang digunakan:
+
+- Rule Efficiency
+- Adaptive Efficiency
+- Improvement
+- Mean
+- Standard Deviation
+- State of Charge
+
+---
+
+# Referensi Utama
+
+1. **Wardhana, A. S., Ferdiansyah, M., & Kholifah, S. K. (2025).**
+
+**Desain dan Prototipe Integrasi IoT dalam Pertanian Hidroponik Cerdas Berbasis Energi Terbarukan.**
+
+→ Referensi utama penelitian karena membahas integrasi IoT dan panel surya pada sistem hidroponik cerdas yang menjadi dasar pengembangan Adaptive Energy Scheduler.
+
+---
+
+# Referensi Pendukung
+
+### Smart Agriculture
+
+- Almalki, F. A.
+  *A Low-Cost Platform for Environmental Smart Farming Monitoring System Based on IoT and UAVs.*
+
+- Rahutomo, F., dkk.
+  *Implementasi Smart Farming Hidroponik Berbasis Internet of Things.*
+
+---
+
+### Smart Hydroponic
+
+- Austria, A. C., dkk.
+  *Development of IoT Smart Greenhouse System for Hydroponic Gardens.*
+
+- Ridwan, M., & Sari, K. M.
+  *Penerapan IoT dalam Sistem Otomatisasi Kontrol Hidroponik.*
+
+---
+
+### IoT
+
+- Adhy, D. R., dkk.
+  *Sistem Monitoring Keamanan Pada Green House.*
+
+- Alam, R. I., & Nasuha, A.
+  *Sistem Pengendali pH Air dan Pemantauan Lingkungan Tanaman Hidroponik Menggunakan Fuzzy Logic Berbasis IoT.*
+
+---
+
+### Renewable Energy
+
+- Mohammad, L., dkk.
+  *Pengembangan Sistem Hidroponik Otomatis Berbasis Panel Surya dan Baterai.*
+
+- Melkysedek, T., dkk.
+  *Design and Build Hydroponic Installations Using IoT-Based Multisensors with Solar Panel Electrical Energy.*
+
+---
+
+### Energy Management
+
+- Azuatalam, D., dkk.
+  *Comprehensive Review of Energy Management Strategies for PV-Battery Systems.*
+
+- Melath, G., dkk.
+  *Comprehensive Power Management Scheme for Hybrid PV-Battery Systems.*
+
+---
+
+### NASA POWER
+
+- NASA POWER Project Documentation
+
+- NASA POWER API Documentation
+
+---
+
+# Dokumen yang Disimpan
+
+Folder **02-literatur** berisi dokumen pendukung penelitian sebagai berikut.
+
+| No | Dokumen | Status |
+|----|---------|:------:|
+| 1 | Jurnal utama penelitian | ✅ |
+| 2 | Jurnal pendukung | ✅ |
+| 3 | Ringkasan literatur | ✅ |
+| 4 | Matriks literatur | ✅ |
+| 5 | Daftar pustaka (.bib) | ✅ |
+| 6 | Daftar pustaka (.ris) | ✅ |
+| 7 | Sitasi Mendeley | ✅ |
+
+---
+
+# Struktur Folder
+
+```
+02-literatur/
+│
+├── artikel/
+│   ├── Wardhana2025.pdf
+│   ├── Adhy2024.pdf
+│   ├── Alam2020.pdf
+│   ├── Almalki2021.pdf
+│   ├── Austria2023.pdf
+│   ├── Rahutomo2022.pdf
+│   ├── Ridwan2021.pdf
+│   ├── Mohammad2021.pdf
+│   ├── Melkysedek2023.pdf
+│   └── Referensi_Lain.pdf
+│
+├── matriks-literatur.md
+├── ringkasan-literatur.md
+├── daftar-pustaka.bib
+├── daftar-pustaka.ris
+└── README.md
+```
+
+---
+
+# Navigasi Repository
+
+| Folder | Keterangan |
+|--------|------------|
+| 00-admin | Administrasi Penelitian |
+| 01-proposal | Proposal Penelitian |
+| 03-teori | Landasan Teori |
+| 04-data | Dataset NASA POWER |
+| 05-kode | Implementasi Sistem |
+| 06-output | Hasil Eksperimen |
+| 07-manuskrip | Manuskrip Penelitian |
+| 08-laporan | Laporan Penelitian |
+| 09-docs | Dokumentasi Penelitian |
+
+---
+
+# Catatan
+
+Seluruh referensi pada folder ini digunakan sebagai dasar penyusunan proposal penelitian, penyusunan landasan teori, identifikasi **research gap**, serta pembahasan hasil penelitian. Referensi dipilih berdasarkan relevansi terhadap topik **Adaptive Energy Scheduler berbasis panel surya pada sistem hidroponik cerdas**, dengan fokus pada integrasi IoT, manajemen energi, pemodelan panel surya, pengelolaan baterai, serta pemanfaatan dataset **NASA POWER** sebagai dasar simulasi energi.
