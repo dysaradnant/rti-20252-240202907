@@ -1,39 +1,209 @@
-# Tahap 2 — Implementasi API Gateway (Go)
+# Tahap 2 — Implementasi Model Simulasi
 
-**Status:** Selesai
-**Acuan arsitektur:** [tahap-1-arsitektur-dan-skema-database.md](tahap-1-arsitektur-dan-skema-database.md)
-**Lokasi kode:** [../05-kode/gateway/](../05-kode/gateway/)
+**Status:** Selesai  
+**Acuan penelitian:** [tahap-1-studi-literatur-dan-perancangan.md](tahap-1-studi-literatur-dan-perancangan.md)  
+**Lokasi kode:** [../05-kode/simulasi/](../05-kode/simulasi/)
 
 ---
 
 ## Tujuan
 
-Mengimplementasikan API Gateway (Go + Echo) yang mendukung dua mode operasi melalui `CACHE_MODE`:
+Mengimplementasikan model simulasi sistem hidroponik cerdas berbasis panel surya menggunakan Python dengan mengintegrasikan beberapa komponen utama, yaitu:
 
-- `none` — baseline, setiap request langsung query `signing_keys` di PostgreSQL.
-- `hybrid` — mitigasi penuh: Redis L1 cache (positive/negative) + rate-limit counter permanen di PostgreSQL.
+- Photovoltaic (PV) Model
+- Energy Demand Model
+- Battery Model
+- Adaptive Energy Scheduler
+
+Seluruh model dikembangkan untuk mengevaluasi performa sistem pada kondisi fluktuasi energi menggunakan dataset NASA POWER selama satu tahun penuh.
+
+---
 
 ## Deliverable
 
-- [x] Struktur project Go (`cmd/gateway`, `internal/...`) — DDD-lite per bounded-context (`jwks`, `ratelimit`, `jwtauth`, `httpapi`, `platform`, `metrics`)
-- [x] `docker-compose.yml` (gateway, postgres, redis) dengan healthcheck & `depends_on: condition: service_healthy`
-- [x] Migration SQL via Sqitch (`signing_keys`, `rate_limit_counters`, `upsert_rate_limit_counter` function)
-- [x] Skrip seed (`scripts/seed`): generate RSA-2048 keypair, insert ke `signing_keys`, cetak contoh JWT valid (exp +24h)
-- [x] Middleware verifikasi JWT (RS256) + resolusi `kid` (mode `none` dan `hybrid`, fail-closed pada Postgres down, fail-open pada Redis down)
-- [x] Endpoint `/metrics` (Prometheus, prefix `jwksgw_`): cache hit/miss, db query count, rate-limit blocked count, auth outcome, request duration
-- [x] Konfigurasi via environment variable (`.env.example`)
-- [x] `/healthz` (dipakai healthcheck compose & runner Tahap 3)
-- [x] `README.md` dengan command mentah (sqitch deploy, seed, run, docker compose, switch `CACHE_MODE`)
+- [x] Implementasi **Photovoltaic Model** (`pv_model.py`) untuk menghitung produksi energi panel surya berdasarkan radiasi matahari dan koreksi temperatur.
+- [x] Implementasi **Energy Demand Model** (`load_model.py`) yang mensimulasikan konsumsi energi pompa air, kipas, dan lampu LED berdasarkan kondisi lingkungan.
+- [x] Implementasi **Battery Model** (`battery_model.py`) menggunakan baterai lithium-ion dengan efisiensi charge/discharge dan mekanisme self-discharge.
+- [x] Implementasi **Adaptive Energy Scheduler** (`scheduler.py`) menggunakan skor komposit berdasarkan SOC, energi surya, beban sistem, dan suhu.
+- [x] Implementasi **Rule-Based Scheduler** sebagai metode pembanding (baseline).
+- [x] Integrasi seluruh model ke dalam pipeline simulasi (`experiment_final_part1.py` sampai `experiment_final_part4.py`).
+- [x] Validasi dataset NASA POWER (8.784 data per jam) tanpa missing value maupun data duplikat.
+- [x] Penyimpanan hasil simulasi ke format **CSV** dan **Excel**.
+- [x] Pembuatan metadata eksperimen secara otomatis.
+- [x] Dokumentasi penggunaan melalui `README.md`.
 
-## Hasil Verifikasi End-to-End
+---
 
-Diverifikasi manual via `docker compose` + curl (lihat [../05-kode/gateway/README.md](../05-kode/gateway/README.md) bagian "Verifikasi end-to-end"):
+## Arsitektur Implementasi
 
-- **Hybrid**: valid kid → 200 (cache miss → DB → fill cache) → 200 (cache hit); unknown kid → 401 `invalid_kid` (negative cache) tanpa query DB berulang; flood concurrent dengan `kid` unik → sebagian `429 rate_limited` setelah >20 req/s per `client_ip`.
-- **None**: valid kid selalu 200 dengan `jwksgw_db_queries_total{resolve_key}` naik 1:1 per request; tidak pernah `429`.
-- **Fail-closed**: Postgres down → `503 service_unavailable` (kedua mode). Redis down (hybrid) → kid yang sudah ter-cache tetap `200` (fallback Postgres), `/healthz` melaporkan `redis:false`.
+Pipeline simulasi terdiri atas beberapa tahapan berikut.
+
+```text
+NASA POWER Dataset
+        │
+        ▼
+Data Validation & Preprocessing
+        │
+        ▼
+Photovoltaic Model
+        │
+        ▼
+Energy Demand Model
+        │
+        ▼
+Battery Model
+        │
+        ▼
+Rule-Based Scheduler
+        │
+        ├──────────────┐
+        ▼              ▼
+Adaptive Energy Scheduler
+        │
+        ▼
+Simulation Output
+        │
+        ▼
+CSV / Excel / Graph
+```
+
+---
+
+## Struktur Implementasi
+
+```text
+05-kode/
+│
+├── pv_model.py
+├── battery_model.py
+├── load_model.py
+├── scheduler.py
+├── experiment_final_part1.py
+├── experiment_final_part2.py
+├── experiment_final_part3.py
+├── experiment_final_part4.py
+│
+├── output/
+│   ├── experiment_part1.csv
+│   ├── experiment_part2.csv
+│   ├── experiment_part3.csv
+│   ├── summary_final.csv
+│   └── summary_final.xlsx
+│
+└── graph/
+    ├── battery_soc.png
+    ├── daily_energy.png
+    └── comparison_efficiency.png
+```
+
+---
+
+## Hasil Verifikasi
+
+Implementasi berhasil diverifikasi menggunakan dataset **NASA POWER** periode Januari–Desember 2024 sebanyak **8.784 data**.
+
+### Validasi Dataset
+
+- Jumlah data : **8.784**
+- Missing value : **0**
+- Duplicate data : **0**
+- Format waktu berhasil diproses menjadi data time-series.
+
+---
+
+### Photovoltaic Model
+
+Model berhasil menghasilkan estimasi produksi energi panel surya berdasarkan:
+
+- Radiasi matahari
+- Temperatur lingkungan
+- Efisiensi panel surya
+
+Output:
+
+- Energi PV per jam
+- Energi PV harian
+- Total energi tahunan
+
+Total energi yang dihasilkan:
+
+**177,51 kWh**
+
+---
+
+### Energy Demand Model
+
+Model beban berhasil mensimulasikan konsumsi energi:
+
+- Pompa air
+- Kipas pendingin
+- Lampu LED
+
+Total konsumsi energi:
+
+**196,52 kWh**
+
+---
+
+### Battery Model
+
+Battery Model berhasil menghitung:
+
+- Charging
+- Discharging
+- Self-discharge
+- State of Charge (SOC)
+
+Hasil:
+
+- Average SOC : **50,84%**
+- Standard Deviation : **32,02**
+
+---
+
+### Adaptive Energy Scheduler
+
+Adaptive Energy Scheduler berhasil menentukan mode operasi berdasarkan skor komposit.
+
+Mode operasi:
+
+- Normal Operation
+- Adaptive Saving
+- Priority Pump
+- Emergency Mode
+
+Performa rata-rata:
+
+| Parameter | Nilai |
+|-----------|------:|
+| Adaptive Efficiency | **41,91 %** |
+| Rule-Based Efficiency | **39,86 %** |
+| Improvement | **2,05 %** |
+
+---
+
+## Hasil Visualisasi
+
+Visualisasi yang berhasil dihasilkan meliputi:
+
+- Battery State of Charge (SOC)
+- Daily PV Energy
+- Rule vs Adaptive Efficiency
+
+Seluruh grafik berhasil diekspor ke folder:
+
+```text
+graph/
+```
+
+---
 
 ## Catatan Lingkungan
 
-- PostgreSQL container di-expose ke host pada port **5433** (bukan 5432) untuk menghindari konflik dengan instance PostgreSQL lokal di mesin development. Di dalam jaringan Docker, gateway tetap mengakses `postgres:5432`.
-- Sqitch project (`migrations/`) adalah dokumentasi migrasi resmi (deploy/revert/verify), namun di mesin development saat ini `sqitch` CLI tidak punya driver `DBD::Pg` — migrasi diverifikasi dengan menjalankan file `deploy/*.sql` langsung via `psql`. Pastikan environment dengan `DBD::Pg` terpasang untuk `sqitch deploy` penuh.
+- Bahasa pemrograman menggunakan **Python 3.x**.
+- Analisis data menggunakan **Pandas** dan **NumPy**.
+- Perhitungan statistik menggunakan **SciPy**.
+- Visualisasi menggunakan **Matplotlib**.
+- Dataset berasal dari **NASA POWER Hourly Dataset**.
+- Simulasi dilakukan secara lokal menggunakan empat tahap skrip (`experiment_final_part1.py` hingga `experiment_final_part4.py`).
+- Setiap eksperimen direplikasi sebanyak **5 kali** dengan variasi acak ±3% untuk mengevaluasi konsistensi performa Adaptive Energy Scheduler.
