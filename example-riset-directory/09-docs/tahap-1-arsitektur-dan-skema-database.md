@@ -1,4 +1,4 @@
-# Tahap 1 — Perancangan Arsitektur & Skema Database
+# Tahap 1 — Studi Literatur dan Perancangan Sistem
 
 **Status:** Selesai
 
@@ -6,94 +6,242 @@
 
 ## 1. Komponen Sistem
 
-1. **API Gateway (Go, Echo)** — menerima request, mem-parsing header JWT untuk mengambil `kid`, lalu meresolusi JWK terkait sebelum verifikasi signature.
-2. **Redis (L1 Cache, murni cache JWKS)**
-   - *Positive cache*: `jwks:kid:<kid>` → JWK (TTL pendek, mis. 5 menit) untuk kunci valid.
-   - *Negative cache*: `jwks:negative:<kid>` → marker (TTL pendek, mis. 60 detik) untuk `kid` yang tidak ditemukan — inti mitigasi flooding.
-   - Tidak menyimpan state rate-limit (lihat poin 3).
-3. **PostgreSQL (L2 / Source of Truth + Rate Limit Counter Permanen)** — menyimpan metadata kunci signing (`signing_keys`) dan counter rate-limit permanen (`rate_limit_counters`).
+Sistem yang dikembangkan merupakan integrasi **Internet of Things (IoT)** dengan **panel surya** dan **Adaptive Energy Scheduler** untuk mengelola distribusi energi pada sistem hidroponik cerdas di daerah dengan fluktuasi energi.
 
-## 2. Alur Resolusi Kunci (Mitigasi)
+Komponen utama sistem terdiri atas:
 
+1. **NASA POWER Dataset**
+   - Menyediakan data meteorologi per jam sebagai masukan simulasi.
+   - Variabel yang digunakan meliputi:
+     - Radiasi matahari (*ALLSKY_SFC_SW_DWN*)
+     - Suhu udara (*T2M*)
+     - Kelembaban relatif (*RH2M*)
+     - Kecepatan angin (*WS10M*)
+
+2. **Photovoltaic (PV) Model**
+   - Menghitung energi listrik yang dihasilkan panel surya berdasarkan radiasi matahari.
+   - Memperhitungkan koreksi temperatur terhadap efisiensi panel.
+
+3. **Energy Demand Model**
+   - Menghitung kebutuhan energi sistem hidroponik.
+   - Beban meliputi:
+     - Pompa air
+     - Kipas pendingin
+     - Lampu LED
+
+4. **Battery Model**
+   - Mensimulasikan proses pengisian (*charging*) dan penggunaan energi (*discharging*).
+   - Menghitung **State of Charge (SOC)** setiap jam.
+   - Memperhitungkan efisiensi baterai dan *self-discharge*.
+
+5. **Adaptive Energy Scheduler**
+   - Mengoptimalkan distribusi energi berdasarkan kondisi sistem.
+   - Menggunakan skor komposit dari:
+     - State of Charge (SOC)
+     - Produksi energi panel surya
+     - Beban sistem
+     - Temperatur lingkungan
+
+6. **Rule-Based Scheduler**
+   - Digunakan sebagai metode pembanding (*baseline*).
+   - Menggunakan aturan berbasis ambang batas (*threshold*).
+
+---
+
+# 2. Arsitektur Sistem
+
+```text
+                NASA POWER Dataset
+                         │
+                         ▼
+           Validasi & Preprocessing Data
+                         │
+                         ▼
+              Photovoltaic (PV) Model
+                         │
+                         ▼
+              Energy Demand Model
+                         │
+                         ▼
+                 Battery Model (SOC)
+                         │
+          ┌──────────────┴──────────────┐
+          ▼                             ▼
+ Rule-Based Scheduler      Adaptive Energy Scheduler
+          │                             │
+          └──────────────┬──────────────┘
+                         ▼
+             Perhitungan Efisiensi Energi
+                         │
+                         ▼
+              Analisis Statistik & Grafik
 ```
-Request masuk → Gateway parsing header JWT → ambil `kid`
-  │
-  ├─ Cek Redis positive cache (jwks:kid:<kid>)
-  │     ├─ HIT  → verifikasi signature → lanjut
-  │     └─ MISS ↓
-  │
-  ├─ Cek Redis negative cache (jwks:negative:<kid>)
-  │     ├─ HIT  → tolak langsung (401), tanpa query DB
-  │     └─ MISS ↓
-  │
-  ├─ UPSERT & cek rate_limit_counters di PostgreSQL (atomic, per client_ip + window)
-  │     ├─ EXCEEDED → tolak (429) + set Redis negative cache
-  │     └─ OK ↓
-  │
-  └─ Query PostgreSQL (signing_keys WHERE kid = ? AND is_active)
-        ├─ FOUND     → isi Redis positive cache → verifikasi signature
-        └─ NOT FOUND → set Redis negative cache → tolak (401)
+
+---
+
+# 3. Alur Simulasi Sistem
+
+```text
+Dataset NASA POWER
+        │
+        ▼
+Validasi Data
+        │
+        ▼
+Preprocessing
+        │
+        ▼
+Perhitungan Produksi Energi PV
+        │
+        ▼
+Perhitungan Beban Sistem
+        │
+        ▼
+Simulasi Battery Model
+        │
+        ▼
+Rule-Based Scheduler
+        │
+        ├──────────────┐
+        ▼              ▼
+Adaptive Energy Scheduler
+        │
+        ▼
+Multiple Run Experiment
+        │
+        ▼
+Analisis Statistik
+        │
+        ▼
+Visualisasi Hasil
 ```
 
-Catatan: pada mode `CACHE_MODE=none` (baseline), langkah cek Redis dan rate-limit dilewati — setiap request langsung query `signing_keys` di PostgreSQL, mensimulasikan gateway tanpa mitigasi.
+---
 
-Mekanisme **fail-closed**: jika Redis tidak dapat diakses, gateway tetap melanjutkan ke PostgreSQL (rate-limit counter tetap berfungsi karena bersumber dari PostgreSQL); jika PostgreSQL tidak dapat diakses, request ditolak (bukan diloloskan tanpa verifikasi).
+# 4. Parameter Sistem
 
-## 3. Skema Database (PostgreSQL)
+## Panel Surya
 
-```sql
-CREATE TABLE signing_keys (
-    kid             VARCHAR(255) PRIMARY KEY,
-    kty             VARCHAR(10)  NOT NULL DEFAULT 'RSA',
-    alg             VARCHAR(10)  NOT NULL DEFAULT 'RS256',
-    use_type        VARCHAR(10)  NOT NULL DEFAULT 'sig',
-    n               TEXT         NOT NULL,   -- modulus, base64url
-    e               TEXT         NOT NULL,   -- exponent, base64url
-    is_active       BOOLEAN      NOT NULL DEFAULT TRUE,
-    created_at      TIMESTAMPTZ  NOT NULL DEFAULT now(),
-    expires_at      TIMESTAMPTZ,
-    revoked_at      TIMESTAMPTZ
-);
+| Parameter | Nilai |
+|---|---:|
+| Kapasitas Panel | 100 Wp |
+| Koefisien Temperatur | −0,0045/°C |
+| Efisiensi Model | Berdasarkan NASA POWER |
 
-CREATE INDEX idx_signing_keys_active ON signing_keys (kid) WHERE is_active = TRUE;
+---
 
--- Counter rate-limit permanen (source of truth di PostgreSQL)
-CREATE TABLE rate_limit_counters (
-    client_ip       INET        NOT NULL,
-    window_start    TIMESTAMPTZ NOT NULL,
-    request_count   INTEGER     NOT NULL DEFAULT 0,
-    blocked_count   INTEGER     NOT NULL DEFAULT 0,
-    PRIMARY KEY (client_ip, window_start)
-);
-```
+## Baterai
 
-Upsert atomik untuk increment counter per request (window tetap, mis. 1 detik):
+| Parameter | Nilai |
+|---|---:|
+| Jenis | Lithium-ion |
+| Kapasitas | 240 Wh |
+| Efisiensi Charging | 95 % |
+| Efisiensi Discharging | 95 % |
+| Self-discharge | 0,02 %/jam |
+| SOC Minimum | 20 % |
+| SOC Maksimum | 100 % |
 
-```sql
-INSERT INTO rate_limit_counters (client_ip, window_start, request_count)
-VALUES ($1, $2, 1)
-ON CONFLICT (client_ip, window_start)
-DO UPDATE SET request_count = rate_limit_counters.request_count + 1
-RETURNING request_count;
-```
+---
 
-Jika `request_count` melebihi ambang batas, request ditolak dan `blocked_count` di-increment pada baris yang sama. Data ini bersifat permanen (tidak di-TTL) sehingga dapat dipakai langsung untuk analisis pola serangan pada Tahap 4.
+## Beban Sistem
 
-Tabel log lookup tambahan (untuk cache hit/miss ratio) akan ditentukan pada Tahap 2 setelah skenario k6 lebih jelas.
+| Komponen | Daya |
+|---|---:|
+| Pompa Air | 18 W |
+| Kipas Pendingin | 12 W |
+| Lampu LED | 24 W |
 
-## 4. Skema Redis (Murni L1 Cache JWKS)
+Duty cycle masing-masing aktuator ditentukan berdasarkan kondisi lingkungan yang diperoleh dari dataset meteorologi.
 
-| Key Pattern | Tipe | TTL | Tujuan |
-|---|---|---|---|
-| `jwks:kid:<kid>` | STRING (JSON JWK) | ~300s | Cache positif untuk kunci valid |
-| `jwks:negative:<kid>` | STRING (`"1"`) | ~60s | Cache negatif untuk `kid` tak dikenal |
+---
 
-## 5. Keputusan Teknis (Final)
+## Adaptive Energy Scheduler
 
-1. **Mode eksperimen**: satu binary gateway dengan toggle `CACHE_MODE=none|hybrid` — `none` = baseline tanpa cache/rate-limit, `hybrid` = arsitektur mitigasi penuh. Memastikan perbandingan baseline vs mitigated apple-to-apple untuk perhitungan $D_{perf}$.
-2. **Framework Gateway**: **Echo** (Go web framework).
-3. **Rate limiting**: counter permanen di **PostgreSQL** (`rate_limit_counters`, atomic UPSERT per `client_ip` + window). **Redis murni sebagai L1 cache JWKS** (positive & negative cache), tidak menyimpan state rate-limit.
-4. **Identity Service**: **PostgreSQL `signing_keys` langsung sebagai backing store** — tidak ada microservice tambahan; fokus eksperimen pada lapisan caching/rate-limit di Gateway.
-5. **Redis client**: `go-redis/redis/v9` (default standar Go ekosistem).
-6. **PostgreSQL driver**: `pgx` (native driver, performa baik, mendukung connection pooling via `pgxpool`).
-7. **Skenario issuer**: single issuer (disederhanakan) — dapat diperluas ke multi-issuer di penelitian lanjutan jika diperlukan.
+Scheduler menggunakan skor komposit berdasarkan empat parameter utama.
+
+| Parameter | Bobot |
+|---|---:|
+| State of Charge (SOC) | 40 % |
+| Energi Panel Surya | 30 % |
+| Beban Sistem | 20 % |
+| Temperatur | 10 % |
+
+Mode operasi ditentukan berdasarkan nilai skor akhir.
+
+| Mode | Kondisi |
+|---|---|
+| Normal Operation | Skor ≥ 80 |
+| Adaptive Saving | 60 ≤ Skor < 80 |
+| Priority Pump | 40 ≤ Skor < 60 |
+| Emergency Mode | Skor < 40 |
+
+---
+
+# 5. Dataset Penelitian
+
+| Parameter | Nilai |
+|---|---|
+| Sumber Data | NASA POWER |
+| Periode | Januari–Desember 2024 |
+| Resolusi | Per Jam |
+| Jumlah Data | 8.784 |
+| Koordinat | 7,55° LS; 109,67° BT |
+
+Tahap validasi menunjukkan:
+
+- Tidak terdapat *missing value*.
+- Tidak terdapat data duplikat.
+- Seluruh data berhasil diproses sebagai deret waktu (*time series*).
+
+---
+
+# 6. Keputusan Teknis (Final)
+
+1. **Platform simulasi** menggunakan **Python 3.x**.
+
+2. **Analisis data** menggunakan:
+
+   - Pandas
+   - NumPy
+
+3. **Analisis statistik** menggunakan:
+
+   - SciPy
+
+4. **Visualisasi** menggunakan:
+
+   - Matplotlib
+
+5. **Metode pembanding** menggunakan **Rule-Based Scheduler**.
+
+6. **Metode yang diusulkan** adalah **Adaptive Energy Scheduler** berbasis skor komposit.
+
+7. **Dataset penelitian** menggunakan **NASA POWER Hourly Dataset** periode Januari–Desember 2024 sebanyak **8.784 data**.
+
+8. **Metode evaluasi** menggunakan:
+
+   - Multiple Run Experiment (5 kali)
+   - Analisis statistik deskriptif
+   - Paired t-test
+   - Independent t-test
+   - Cohen's d
+
+9. **Output penelitian** meliputi:
+
+   - Produksi energi panel surya
+   - Konsumsi energi sistem
+   - Battery State of Charge (SOC)
+   - Rule-Based Efficiency
+   - Adaptive Efficiency
+   - Grafik Daily PV Energy
+   - Grafik Battery SOC
+   - Grafik Rule vs Adaptive Efficiency
+
+10. Seluruh hasil simulasi diekspor dalam format:
+
+- CSV
+- Excel
+- PNG
+
+sehingga dapat digunakan untuk analisis lanjutan maupun penyusunan manuskrip jurnal.
